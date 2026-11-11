@@ -313,7 +313,8 @@ function shape(s,col,w,hl){const[x1,y1]=toS(s.a),[x2,y2]=toS(s.b);
   for(const[x,y]of[[x1,y1],[x2,y2]]){cx.moveTo(x-nx,y-ny);cx.lineTo(x+nx,y+ny)}cx.stroke();
   cx.save();cx.translate((x1+x2)/2,(y1+y2)/2);cx.rotate(Math.abs(an)>Math.PI/2?an+Math.PI:an);cx.textAlign='center';
   cx.fillText(fmt(Math.hypot(s.b.x-s.a.x,s.b.y-s.a.y)),0,-8);cx.restore()}}
-function draw(){if(tx)txPos();if(!V)return;const cs=getComputedStyle(document.documentElement),c=n=>cs.getPropertyValue(n).trim();
+var _dq=0;function draw(){if(_dq)return;_dq=1;requestAnimationFrame(()=>{_dq=0;drawNow()})}
+function drawNow(){if(tx)txPos();if(!V)return;const cs=getComputedStyle(document.documentElement),c=n=>cs.getPropertyValue(n).trim();
  cx.fillStyle=c('--cbg');cx.fillRect(0,0,W,H);
  const st=gs(),a=toW(0,0),b=toW(W,H);
  if(FL.grid)for(const major of [0,1]){cx.beginPath();cx.strokeStyle=c(major?'--cgrid2':'--cgrid');cx.lineWidth=1;
@@ -324,7 +325,10 @@ function draw(){if(tx)txPos();if(!V)return;const cs=getComputedStyle(document.do
  if(IMG){const[ix,iy]=toS({x:IMG.x,y:IMG.y}),w=IMG.w*V.k,h=w*IMG.el.naturalHeight/IMG.el.naturalWidth;if(cropOn&&cropT===IMG){const t=IMG.cr;IMG.cr=null;cx.globalAlpha=IMG.o*.3;imgPaint(ix,iy,w,h);IMG.cr=t}cx.globalAlpha=IMG.o;imgPaint(ix,iy,w,h);cx.globalAlpha=1;if(cropOn&&cropT===IMG){const q=IMG.cr||{l:0,t:0,r:0,b:0},x0=ix+w*q.l,x1=ix+w*(1-q.r),y0=iy+h*q.t,y1=iy+h*(1-q.b);cx.setLineDash([6,4]);cx.strokeStyle='#fff';cx.lineWidth=1.5;cx.strokeRect(x0,y0,x1-x0,y1-y0);cx.setLineDash([]);cx.fillStyle='#fff';for(const[hx,hy]of cropHandles(x0,y0,x1,y1))cx.fillRect(hx-6,hy-6,12,12)}if(adj){cx.setLineDash([6,4]);cx.strokeStyle=c('--acc');cx.lineWidth=1.5;cx.strokeRect(ix,iy,w,h);cx.setLineDash([]);cx.fillStyle=c('--acc');for(const[hx,hy]of[[ix,iy],[ix+w,iy],[ix,iy+h],[ix+w,iy+h]])cx.fillRect(hx-6,hy-6,12,12)}}
  cx.lineJoin='round';cx.font='12px "IBM Plex Sans",system-ui,sans-serif';
  const ss=new Set(S());
- shapes.forEach((s,i)=>{if(ss.has(i)){cx.globalAlpha=.35;shape(s,c('--acc'),lw(s)+6,1);cx.globalAlpha=1}shape(s,s.c||c('--cink'),lw(s))});if(tx&&tx.pv&&tx.i<0)shape(Object.assign({t:'text',a:tx.a,b:tx.a,s:$('#tt').value,h:parseFloat($('#th').value)||5,ls:parseFloat($('#tls').value)||1.2},tx.w>0?{w:tx.w}:{},tx.fm||{}),(tx.fm&&tx.fm.c)||c('--cink'),1);
+ {const ink=c('--cink'),acc=c('--acc');let bk=null;const fl=()=>{if(bk!==null){cx.stroke();cx.setLineDash([]);bk=null}};
+ shapes.forEach((s,i)=>{const sl=ss.has(i);
+  if(!sl&&s.t=='line'){const[x1,y1]=toS(s.a),[x2,y2]=toS(s.b);if((x1<0&&x2<0)||(x1>W&&x2>W)||(y1<0&&y2<0)||(y1>H&&y2>H))return;const col=s.c||ink,w=lw(s),k=col+'|'+w+'|'+(s.d||'');if(bk!==k){fl();cx.strokeStyle=col;cx.lineWidth=w;cx.setLineDash(DASH[s.d]||[]);cx.beginPath();bk=k}cx.moveTo(x1,y1);cx.lineTo(x2,y2);return}
+  fl();if(sl){cx.globalAlpha=.35;shape(s,acc,lw(s)+6,1);cx.globalAlpha=1}shape(s,s.c||ink,lw(s))});fl()}if(tx&&tx.pv&&tx.i<0)shape(Object.assign({t:'text',a:tx.a,b:tx.a,s:$('#tt').value,h:parseFloat($('#th').value)||5,ls:parseFloat($('#tls').value)||1.2},tx.w>0?{w:tx.w}:{},tx.fm||{}),(tx.fm&&tx.fm.c)||c('--cink'),1);
  if(ss.size==1&&shapes[sel]){const sh=shapes[sel];
   if(sh.t=='pic'){const q=toS(sh.a);cx.save();cx.strokeStyle='#2f7bf5';cx.lineWidth=1.5;cx.strokeRect(q[0],q[1],sh.w*V.k,picH(sh)*V.k);cx.restore()}
   if(sh.t=='text'){const B=txBox(sh),P4=[[0,B.top],[B.w,B.top],[B.w,B.bot],[0,B.bot]].map(([x,y])=>toS(txR(sh,x,y)));cx.save();cx.strokeStyle='#2f7bf5';cx.globalAlpha=.85;cx.lineWidth=1;cx.beginPath();P4.forEach((q,i)=>i?cx.lineTo(q[0],q[1]):cx.moveTo(q[0],q[1]));cx.closePath();cx.stroke();cx.restore()}
@@ -482,7 +486,8 @@ function buildPdf(win,fit,pg){
  const lab=v=>+v.toFixed(2),label=sc>=1?lab(sc)+':1':'1:'+lab(1/sc),K=.5523;
  let c=win?'1 w 0 G 0 g\n'+n(X(b.x0))+' '+n(Y(b.y0))+' '+n((b.x1-b.x0)*s)+' '+n((b.y1-b.y0)*s)+' re S\n0.7 w\n':'1 w 0 G 0 g\n'+n(m)+' '+n(m)+' '+n(aw)+' '+n(ah+tb)+' re S\n'+n(m)+' '+n(m+tb)+' m '+n(pw-m)+' '+n(m+tb)+' l S\n0.7 w\n';
  if(win)c+='q '+n(X(b.x0))+' '+n(Y(b.y0))+' '+n((b.x1-b.x0)*s)+' '+n((b.y1-b.y0)*s)+' re W n\n';
- for(const t of shapes){if(t.t=='pic')continue;const a=t.a,e=t.b,x1=X(a.x),y1=Y(a.y),x2=X(e.x),y2=Y(e.y),fl=t.f&&(t.t=='rect'||t.t=='circ'),rc=rgb(t.c||'#000000'),rf=fl?lite(t.c||'#000000'):rc;
+ const IM=[];
+ for(const t of shapes){if(t.t=='pic'){const m=pdfImg(t,s);if(m){IM.push(m);const hh=picH(t)*s,L=X(t.a.x),Tp=Y(t.a.y),q=m.q;c+='q '+n(t.w*s*m.fw)+' 0 0 '+n(hh*m.fh)+' '+n(L+t.w*s*q.l)+' '+n(Tp-hh*q.t-hh*m.fh)+' cm /Im'+(IM.length-1)+' Do Q\n'}continue}const a=t.a,e=t.b,x1=X(a.x),y1=Y(a.y),x2=X(e.x),y2=Y(e.y),fl=t.f&&(t.t=='rect'||t.t=='circ'),rc=rgb(t.c||'#000000'),rf=fl?lite(t.c||'#000000'):rc;
   c+=rc+' RG '+rf+' rg '+n(lmm(t)*2.835)+' w ['+(DASH[t.d]||[]).map(v=>n(v*.5)).join(' ')+'] 0 d\n';
   if(t.t=='text'){const q=(t.r||0)*Math.PI/180,co=Math.cos(q),si=Math.sin(q),fn=t.b?(t.i?'/F4':'/F2'):(t.i?'/F3':'/F1'),hh=t.h*s;txLay(t).forEach((ln,k)=>{const d=k*t.h*(t.ls||1.2)*s;ln.segs.forEach(g=>{const gx=g.x*s,bx=x1+si*d+co*gx,by=y1-co*d+si*gx;let tw='';if(g.j&&g.t.indexOf(' ')>0)tw=n(g.j*s/(g.t.split(' ').length-1))+' Tw ';
    c+='BT '+fn+' '+n(hh)+' Tf '+tw+n(co)+' '+n(si)+' '+n(-si)+' '+n(co)+' '+n(bx)+' '+n(by)+' Tm ('+g.t.replace(/[^\x20-\x7e]/g,'?').replace(/([\\()])/g,'\\$1')+') Tj '+(tw?'0 Tw ':'')+'ET\n';
@@ -497,18 +502,29 @@ function buildPdf(win,fit,pg){
     c+=n(x1-nx)+' '+n(y1-ny)+' m '+n(x1+nx)+' '+n(y1+ny)+' l '+n(x2-nx)+' '+n(y2-ny)+' m '+n(x2+nx)+' '+n(y2+ny)+' l S\n';
     const a2=Math.abs(an)>Math.PI/2?an+Math.PI:an,co=Math.cos(a2),si=Math.sin(a2),txt=fmt(Math.hypot(e.x-a.x,e.y-a.y)),w=txt.length*4;
     c+='BT /F1 8 Tf '+[co,si,-si,co,(x1+x2)/2-co*w/2-si*3,(y1+y2)/2-si*w/2+co*3].map(v=>v.toFixed(3)).join(' ')+' Tm ('+txt+') Tj ET\n'}}}
- if(win)c+='Q\n';c+='0 g 0 G [] 0 d\n';c+='BT /F1 9 Tf 1 0 0 1 '+n(win?X(b.x0):m+8)+' '+n(win?Y(b.y0)-13:m+9)+' Tm (AUTOCAD 2D MOBILE   Scale '+label+'   Units mm   '+new Date().toISOString().slice(0,10)+') Tj ET\n';
- const objs=['<</Type/Catalog/Pages 2 0 R>>','<</Type/Pages/Kids[3 0 R]/Count 1>>','<</Type/Page/Parent 2 0 R/MediaBox[0 0 '+pw.toFixed(2)+' '+ph.toFixed(2)+']/Contents 4 0 R/Resources<</Font<</F1 5 0 R/F2 6 0 R/F3 7 0 R/F4 8 0 R>>>>>>','<</Length '+c.length+'>>\nstream\n'+c+'endstream','<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>','<</Type/Font/Subtype/Type1/BaseFont/Helvetica-Bold>>','<</Type/Font/Subtype/Type1/BaseFont/Helvetica-Oblique>>','<</Type/Font/Subtype/Type1/BaseFont/Helvetica-BoldOblique>>'];
- let o='%PDF-1.4\n';const off=[];objs.forEach((x,i)=>{off.push(o.length);o+=(i+1)+' 0 obj\n'+x+'\nendobj\n'});
- const xr=o.length;o+='xref\n0 '+(objs.length+1)+'\n0000000000 65535 f \n'+off.map(v=>String(v).padStart(10,'0')+' 00000 n \n').join('')+'trailer\n<</Size '+(objs.length+1)+'/Root 1 0 R>>\nstartxref\n'+xr+'\n%%EOF';
- return new Blob([o],{type:'application/pdf'})}
+ if(win)c+='Q\n';c+='0 g 0 G [] 0 d\n';
+ const objs=['<</Type/Catalog/Pages 2 0 R>>','<</Type/Pages/Kids[3 0 R]/Count 1>>','<</Type/Page/Parent 2 0 R/MediaBox[0 0 '+pw.toFixed(2)+' '+ph.toFixed(2)+']/Contents 4 0 R/Resources<</Font<</F1 5 0 R/F2 6 0 R/F3 7 0 R/F4 8 0 R>>'+(IM.length?'/XObject<<'+IM.map((m,i)=>'/Im'+i+' '+(9+i)+' 0 R').join(' ')+'>>':'')+'>>>>','<</Length '+c.length+'>>\nstream\n'+c+'endstream','<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>','<</Type/Font/Subtype/Type1/BaseFont/Helvetica-Bold>>','<</Type/Font/Subtype/Type1/BaseFont/Helvetica-Oblique>>','<</Type/Font/Subtype/Type1/BaseFont/Helvetica-BoldOblique>>'];
+ IM.forEach(m=>objs.push({h:'<</Type/XObject/Subtype/Image/Width '+m.w+'/Height '+m.h+'/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length '+m.d.length+'>>\nstream\n',d:m.d}));
+ const P=[];let pos=0;const pu=x=>{if(typeof x=='string'){const u=new Uint8Array(x.length);for(let k=0;k<x.length;k++)u[k]=x.charCodeAt(k)&255;x=u}P.push(x);pos+=x.length};
+ const off=[];pu('%PDF-1.4\n');objs.forEach((x,i)=>{off.push(pos);pu((i+1)+' 0 obj\n');if(typeof x=='string')pu(x);else{pu(x.h);pu(x.d);pu('\nendstream')}pu('\nendobj\n')});
+ const xr=pos;pu('xref\n0 '+(objs.length+1)+'\n0000000000 65535 f \n'+off.map(v=>String(v).padStart(10,'0')+' 00000 n \n').join('')+'trailer\n<</Size '+(objs.length+1)+'/Root 1 0 R>>\nstartxref\n'+xr+'\n%%EOF');
+ return new Blob(P,{type:'application/pdf'})}
+function pdfImg(t,s){const el=getPic(t.name);if(!el)return null;try{const T=picT(t),src=imgSrc(T),q=T.cr||{l:0,t:0,r:0,b:0},fw=1-q.l-q.r,fh=1-q.t-q.b;if(fw<=0||fh<=0)return null;
+ const sw=src.naturalWidth||src.width,sh=src.naturalHeight||src.height,rw=sw*fw,rh=sh*fh,pt=t.w*s*fw,px=Math.max(8,Math.min(rw,Math.round(pt*150/72),2400)),k=px/rw,c=document.createElement('canvas');c.width=Math.max(1,Math.round(rw*k));c.height=Math.max(1,Math.round(rh*k));
+ const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.globalAlpha=T.o==null?1:T.o;g.drawImage(src,sw*q.l,sh*q.t,rw,rh,0,0,c.width,c.height);
+ const b=atob(c.toDataURL('image/jpeg',.9).split(',')[1]),d=new Uint8Array(b.length);for(let i=0;i<b.length;i++)d[i]=b.charCodeAt(i);return{w:c.width,h:c.height,d,q,fw,fh}}catch(e){return null}}
 function cropHandles(x0,y0,x1,y1){const mx=(x0+x1)/2,my=(y0+y1)/2;return[[x0,y0,'l','t'],[x1,y0,'r','t'],[x0,y1,'l','b'],[x1,y1,'r','b'],[mx,y0,0,'t'],[mx,y1,0,'b'],[x0,my,'l',0],[x1,my,'r',0]].map(a=>a)}
 function imgSrc(T=IMG){const sat=T.sat==null?100:T.sat,br=T.br==null?100:T.br;if(sat==100&&br==100)return T.el;const key=sat+'/'+br;if(T.pk===key&&T.pc)return T.pc;
  const nw=T.el.naturalWidth,nh=T.el.naturalHeight,sc=Math.min(1,1600/Math.max(nw,nh)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(nw*sc));c.height=Math.max(1,Math.round(nh*sc));
  const g=c.getContext('2d');g.drawImage(T.el,0,0,c.width,c.height);
  try{const d=g.getImageData(0,0,c.width,c.height),a=d.data,k=sat/100,b=br/100;for(let i=0;i<a.length;i+=4){const r=a[i],gg=a[i+1],bb=a[i+2],l=.299*r+.587*gg+.114*bb;a[i]=Math.max(0,Math.min(255,(l+(r-l)*k)*b));a[i+1]=Math.max(0,Math.min(255,(l+(gg-l)*k)*b));a[i+2]=Math.max(0,Math.min(255,(l+(bb-l)*k)*b))}g.putImageData(d,0,0)}catch(e){return T.el}
  T.pc=c;T.pk=key;return c}
-function imgPaint(x,y,w,h,T=IMG){const s=imgSrc(T),q=T.cr||{l:0,t:0,r:0,b:0},sw=s.naturalWidth||s.width,sh=s.naturalHeight||s.height,fw=1-q.l-q.r,fh=1-q.t-q.b;if(fw<=0||fh<=0)return;cx.drawImage(s,sw*q.l,sh*q.t,sw*fw,sh*fh,x+w*q.l,y+h*q.t,w*fw,h*fh)}
+const lodM=new WeakMap();
+function lod(s,tw){const sw=s.naturalWidth||s.width;if(!(tw>0)||sw<=tw*1.5)return s;let L=lodM.get(s);if(!L){L=[s];lodM.set(s,L)}
+ for(let k=0;k<L.length;k++){const w=L[k].naturalWidth||L[k].width;if(w<tw*1.5&&k>0)return L[k-1];if(w/2<tw)return L[k]}
+ let p=L[L.length-1];for(let g=0;g<12;g++){const pw=p.naturalWidth||p.width,ph=p.naturalHeight||p.height,c=document.createElement('canvas');c.width=Math.max(1,pw>>1);c.height=Math.max(1,ph>>1);c.getContext('2d').drawImage(p,0,0,c.width,c.height);L.push(c);p=c;if(c.width/2<tw||c.width<=64)break}
+ for(let k=0;k<L.length;k++){const w=L[k].naturalWidth||L[k].width;if(w/2<tw)return L[k]}return L[L.length-1]}
+function imgPaint(x,y,w,h,T=IMG){const s0=imgSrc(T),q=T.cr||{l:0,t:0,r:0,b:0},s=lod(s0,w*(window.devicePixelRatio||1)),sw=s.naturalWidth||s.width,sh=s.naturalHeight||s.height,fw=1-q.l-q.r,fh=1-q.t-q.b;if(fw<=0||fh<=0)return;cx.drawImage(s,sw*q.l,sh*q.t,sw*fw,sh*fh,x+w*q.l,y+h*q.t,w*fw,h*fh)}
 function hitCrop(px,py){const T=IT(),r=imgRect(T),q=T.cr||{l:0,t:0,r:0,b:0};for(const[hx,hy,fx,fy]of cropHandles(r.x+r.w*q.l,r.y+r.h*q.t,r.x+r.w*(1-q.r),r.y+r.h*(1-q.b)))if(Math.hypot(px-hx,py-hy)<=22)return{m:'crop',fx,fy};return null}
 function cropDrag(d,w){const T=IT(),hW=T.w*T.el.naturalHeight/T.el.naturalWidth,fx=(w.x-T.x)/T.w,fy=(T.y-w.y)/hW,q=T.cr||(T.cr={l:0,t:0,r:0,b:0}),m=.05,cl=(v,a,b)=>Math.max(a,Math.min(b,v));
  if(d.fx=='l')q.l=cl(fx,0,1-q.r-m);if(d.fx=='r')q.r=cl(1-fx,0,1-q.l-m);if(d.fy=='t')q.t=cl(fy,0,1-q.b-m);if(d.fy=='b')q.b=cl(1-fy,0,1-q.t-m)}
