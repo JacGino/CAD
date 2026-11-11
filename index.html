@@ -582,19 +582,19 @@ const FAMX=',"IBM Plex Sans",system-ui,sans-serif';
 function fontStr(s,px){return(s.i?'italic ':'')+(s.b?'bold ':'')+px+'px '+(s.f?'"'+s.f+'"':'')+(s.f?FAMX:FAMX.slice(1))}
 function txW(t,h,s){cx.save();cx.font=fontStr(s||{},100);const w=cx.measureText(t).width/100*h;cx.restore();return w}
 const _tl=new Map();
-function txLay(s){const key=[s.s,s.h,s.w,s.f,s.b,s.i,s.fi,s.li,s.tb,s.al].join('\u0001');let o=_tl.get(key);if(o)return o;
- const h=s.h,W=s.w>0?s.w:0,fi=s.fi||0,li=s.li||0,tbs=s.tb>0?s.tb:0,sp=txW(' ',h,s);o=[];
- for(const para of String(s.s).split('\n')){let head=null,body=para;const ti=para.indexOf('\t');
+function txLay(s){const key=[s.s,s.h,s.w,s.f,s.b,s.i,s.fi,s.li,s.tb,s.al,s.pp?JSON.stringify(s.pp):''].join('\u0001');let o=_tl.get(key);if(o)return o;
+ const h=s.h,W=s.w>0?s.w:0,sp=txW(' ',h,s);o=[];let pi=-1;
+ for(const para of String(s.s).split('\n')){pi++;const pf=s.pp&&s.pp[pi],fi=(pf?pf.fi:s.fi)||0,li=(pf?pf.li:s.li)||0,tbv=pf?pf.tb:s.tb,tbs=tbv>0?tbv:0,pal=(pf&&pf.al)||s.al||'l';let head=null,body=para;const ti=para.indexOf('\t');
   if(ti>=0){head=para.slice(0,ti);body=para.slice(ti+1).replace(/\t/g,' ')}
   let bodyX=fi,cont=li;
   if(head!==null){const hw=txW(head,h,s),mn=fi+hw+h*.3;bodyX=tbs>mn?tbs:(li>mn?li:Math.ceil(mn/(4*h))*4*h);cont=li>0?li:bodyX}
   let avail=W?Math.max(h,W-(head!==null?bodyX:fi)):0;const ls=[];let cur='';
   for(const wd of body.split(' ')){const t=cur?cur+' '+wd:wd;if(cur&&W&&txW(t,h,s)>avail){ls.push(cur);cur=wd;avail=Math.max(h,W-cont)}else cur=t}ls.push(cur);
   ls.forEach((t,k)=>{const segs=[];if(k==0){if(head!==null){segs.push({t:head,x:fi,w:txW(head,h,s)});segs.push({t,x:bodyX,w:txW(t,h,s)})}else segs.push({t,x:fi,w:txW(t,h,s)})}else segs.push({t,x:cont,w:txW(t,h,s)});
-   o.push({segs,last:k==ls.length-1})})}
+   o.push({segs,last:k==ls.length-1,al:pal})})}
  let mx=0;for(const l of o){const g=l.segs[l.segs.length-1];l.R=g.x+g.w;if(l.R>mx)mx=l.R}
- const Wd=W||mx,al=s.al||'l';
- for(const l of o){const g=l.segs[l.segs.length-1];
+ const Wd=W||mx;
+ for(const l of o){const g=l.segs[l.segs.length-1],al=l.al;
   if(al=='c'||al=='r'){const d=Math.max(0,al=='c'?(Wd-l.R)/2:Wd-l.R);if(d)l.segs.forEach(q=>q.x+=d)}
   else if((al=='j'||al=='d')&&W&&(al=='d'||!l.last)&&g.t.indexOf(' ')>0){const ex=W-l.R;if(ex>0)g.j=ex}}
  o.EXT=mx||.0001;
@@ -604,6 +604,14 @@ const txExt=s=>s.w>0?s.w:txLay(s).EXT;
 
 
 var PEND=null;
+function parsePf(q){const o={};let key='';const tabs=[];q=q.replace(/^x/i,'');
+ for(const tk of q.split(',')){const m=tk.match(/^([a-z])?(.*)$/i);let v=m[2];if(m[1])key=m[1].toLowerCase();
+  if(key=='q'){o.al=({l:'l',c:'c',r:'r',j:'j',d:'d'})[(v||'l').toLowerCase()]||'l';continue}
+  const n=parseFloat(v);if(isNaN(n))continue;if(key=='i')o.i=n;else if(key=='l')o.l=n;else if(key=='t')tabs.push(n)}
+ const li=o.l||0,fi=Math.max(0,li+(o.i||0));return{fi:+fi.toFixed(3),li:+li.toFixed(3),tb:tabs.length?+tabs[0].toFixed(3):0,al:o.al||'l'}}
+function pfOut(arr){const A=arr.map(p=>p?{fi:p.fi||0,li:p.li||0,tb:p.tb||0,al:p.al||'l'}:{fi:0,li:0,tb:0,al:'l'}),nz=A.some(p=>p.fi||p.li||p.tb||p.al!='l');if(!nz)return{};
+ const same=A.every(p=>JSON.stringify(p)==JSON.stringify(A[0]));const pick=p=>{const o={};if(p.fi)o.fi=p.fi;if(p.li)o.li=p.li;if(p.tb)o.tb=p.tb;if(p.al!='l')o.al=p.al;return o};
+ return same?pick(A[0]):{pp:A.map(pick)}}
 function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
  for(let j=0;j+1<L.length;j+=2){const c=parseInt(L[j],10),v=L[j+1];
   if(c===0){const t=v.trim();if(t=='SECTION')sec='?';else if(t=='ENDSEC'){sec='';cu=null}else if(sec=='ENTITIES'){cu={t,g:[]};ents.push(cu)}}
@@ -620,11 +628,12 @@ function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
   else if(T=='ARC'){const x=num(e,10),y=num(e,20),r=num(e,40),a1=num(e,50)*Math.PI/180;let a2=num(e,51)*Math.PI/180;if(a2<=a1)a2+=2*Math.PI;const pp=an=>P(x+r*Math.cos(an),y+r*Math.sin(an));if(r>0)out.push(Object.assign({t:'arc',a:pp(a1),m:pp((a1+a2)/2),b:pp(a2)},st))}
   else if(T=='LWPOLYLINE')poly(all(e,10),all(e,20),num(e,70)&1);
   else if(T=='POLYLINE'){const xs=[],ys=[];while(k+1<ents.length&&ents[k+1].t=='VERTEX'){k++;xs.push(num(ents[k],10));ys.push(num(ents[k],20))}poly(xs,ys,num(e,70)&1)}
-  else if(T=='TEXT'||T=='MTEXT'){const h=num(e,40)||2.5,mt=T=='MTEXT';let rot=0,x=num(e,10),y=num(e,20),str,ls=1.2,ax=0,ay=0;
+  else if(T=='TEXT'||T=='MTEXT'){const h=num(e,40)||2.5,mt=T=='MTEXT';let rot=0,x=num(e,10),y=num(e,20),str,ls=1.2,ax=0,ay=0,mtPf=null;
    const dxf=e.g.some(p=>p[0]==11);
    if(mt){rot=dxf&&(num(e,11)||num(e,21))?Math.atan2(num(e,21),num(e,11))*180/Math.PI:num(e,50);
     str=e.g.filter(p=>p[0]==3).map(p=>p[1]).join('')+(e.g.find(p=>p[0]==1)||[0,''])[1];
-    str=str.replace(/\\P/gi,'\n').replace(/\\~/g,' ').replace(/\\S([^;]*);/g,(m,q)=>q.replace(/[\^#]/g,'/')).replace(/\\[fFcCHhQqTtAaLlOoKkWw][^;]*;/g,'').replace(/\\([\\{}])/g,'$1').replace(/[{}]/g,'');
+    {const pf0=[];let anyP=0;const cl=str.split(/\\P/).map(pt=>{let pf=null;pt=pt.replace(/\\p([^;]*);/g,(m,q)=>{pf=Object.assign(pf||{},parsePf(q));anyP=1;return''});pf0.push(pf);return pt});str=cl.join('\n');mtPf=anyP?pf0:null}
+    str=str.replace(/\^I/g,'\t').replace(/\\~/g,' ').replace(/\\S([^;]*);/g,(m,q)=>q.replace(/[\^#]/g,'/')).replace(/\\[fFcCHhQqTtAaLlOoKkWw][^;]*;/g,'').replace(/\\([\\{}])/g,'$1').replace(/[{}]/g,'');
     ls=1.5}
    else{rot=num(e,50);str=(e.g.find(p=>p[0]==1)||[0,''])[1]}
    str=str.replace(/%%[cC]/g,'Ø').replace(/%%[dD]/g,'°').replace(/%%[pP]/g,'±').replace(/%%[uUoO]/g,'');
@@ -642,7 +651,7 @@ function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
     ay=vj==1?.25*h:vj==2?-.5*h:vj==3?-h:0;if(hj==4)ay=-.5*h}
    const q=rot*Math.PI/180,c=Math.cos(q),sn=Math.sin(q);
    const sx=x+ax*c-ay*sn,sy=y+ax*sn+ay*c;
-   out.push(Object.assign({t:'text',a:P(sx,sy),b:P(sx,sy),s:(rw>0?paras:lines).join('\n'),h},ls!=1.2?{ls}:{},rw>0?{w:rw}:{},rot?{r:+rot.toFixed(3)}:{},st))}
+   out.push(Object.assign({t:'text',a:P(sx,sy),b:P(sx,sy),s:(rw>0?paras:lines).join('\n'),h},ls!=1.2?{ls}:{},rw>0?{w:rw}:{},rot?{r:+rot.toFixed(3)}:{},mtPf?pfOut(mtPf.slice(0,(rw>0?paras:lines).length)):{},st))}
   else if(T=='IMAGE'){const u=P(num(e,11),num(e,21)),v=P(num(e,12),num(e,22)),pw=num(e,13)||1,ph=num(e,23)||1,w=Math.hypot(u.x,u.y)*pw,hh=Math.hypot(v.x,v.y)*ph,x=num(e,10),y=num(e,20),hd=(e.g.find(p=>p[0]==340)||[0,''])[1];imgs.push({x,y:y+hh,w,hd})}
   else if(T!='VERTEX'&&T!='SEQEND')skip++}
   {const defs={};let cd=null;for(let j=0;j+1<L.length;j+=2){const c=parseInt(L[j],10),v=L[j+1].trim();if(c===0){cd=v=='IMAGEDEF'?{}:null}else if(cd){if(c===5)cd.h=v;else if(c===1){cd.n=v;defs[cd.h]=v}}}
@@ -1116,7 +1125,7 @@ function fmSync(){const T=fmTargets(),F=T[0]||{};document.querySelectorAll('#ptx
  $('#trf').value=F.f||'';for(const[id,k]of[['tfi','fi'],['tli','li'],['ttb','tb']]){const e=$('#'+id);if(document.activeElement!=e)e.value=F[k]?+(+F[k]).toFixed(2):''}$('#trsv').hidden=!tx;$('#trtab').disabled=!tx}
 function fmSet(k,v){const T=fmTargets();if(!T.length)return;
  if(tx){if(tx.i>=0&&!tx.d){hist.push(JSON.stringify(shapes));redo=[];tx.d=1}}else{hist.push(JSON.stringify(shapes));redo=[]}
- T.forEach(F=>{if(!v||(k=='al'&&v=='l'))delete F[k];else F[k]=v});if(tx&&tx.i<0)lastFm=Object.assign({},tx.fm);
+ T.forEach(F=>{if(k=='fi'||k=='li'||k=='tb'||k=='al')delete F.pp;if(!v||(k=='al'&&v=='l'))delete F[k];else F[k]=v});if(tx&&tx.i<0)lastFm=Object.assign({},tx.fm);
  if(tx){txStyle();txPos()}else fmSync();draw();if(!tx||tx.i>=0)save()}
 document.querySelectorAll('#ptx [data-k]').forEach(b=>b.onclick=()=>{const T=fmTargets();fmSet(b.dataset.k,!(T[0]&&T[0][b.dataset.k]))});
 document.querySelectorAll('#ptx [data-al]').forEach(b=>b.onclick=()=>fmSet('al',b.dataset.al));
