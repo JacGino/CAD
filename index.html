@@ -16,7 +16,7 @@
 :root.lite{--panel:#e9ecef;--rib:#dde2e8;--tab:#f1f3f5;--stat:#e3e7ec;--line:#b4bcc6;--txt:#1d2126;--mut:#5a6570;--acc:#0b6fc4;--in:#ffffff;--press1:#cdd3da;--press2:#c0c8d0;--vp:#4a5560;--bd:#b4bcc6;--actbg:#cfe5f8;--actst:#cfe5f8;--sub:#dfe4ea;color-scheme:light}
 *{box-sizing:border-box}
 html{height:100%;background:var(--stat);scroll-padding-top:env(safe-area-inset-top,0px)}
-@media(min-width:700px){:root{padding-top:16px;padding-bottom:0;padding-left:22px;padding-right:22px}#hud{padding-left:34px}html{scroll-padding-top:0;height:100dvh;min-height:100vh}body{height:calc(100dvh - 16px);min-height:calc(100vh - 16px)}#stat{background:var(--stat)}}
+@media(min-width:700px){:root{padding-top:16px;padding-bottom:0;padding-left:22px;padding-right:0}#hud{padding-left:34px}html{scroll-padding-top:0;height:100dvh;min-height:100vh}body{height:calc(100dvh - 16px);min-height:calc(100vh - 16px)}#stat{background:var(--stat)}}
 body{margin:0;height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--panel);color:var(--txt);font:12px/1.25 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;-webkit-user-select:none;user-select:none}
 button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -134,6 +134,13 @@ body.fs #cmd,body.fs #stat{display:none}
 #scfl[hidden]{display:none}
 @media(max-width:1300px){#ttl{font-size:0}#dtab{font-size:10px;margin-left:0}.st{padding:0 5px;gap:3px}#coord{min-width:0}}
 @media(max-width:900px){.ml{display:none}.st{padding:0 3px;gap:2px}#coord{padding:0 4px}}
+#txp{position:absolute;padding:0;margin:0;background:none;border:0;gap:0;z-index:8}#txp[hidden]{display:none!important}#txp:not([hidden]){display:block}
+#txp>*:not(#tt):not(#tnlb):not(#trl){display:none!important}
+#txp #tt{display:block;box-sizing:content-box;flex:none;min-width:0;min-height:0;resize:none;overflow:hidden;white-space:pre;padding:0 4px;margin:0;border:1px dashed var(--acc);border-radius:2px;outline:none;background:rgba(0,0,0,.3);color:var(--cink);font-family:"IBM Plex Sans",system-ui,sans-serif;-webkit-user-select:text;user-select:text}
+#txp #trl{display:block!important;height:14px;margin:0 0 2px;position:relative;background:var(--rib);border:1px solid var(--line);border-radius:2px 2px 0 0;background-image:repeating-linear-gradient(90deg,var(--mut) 0 1px,transparent 1px 12px);background-size:100% 6px;background-repeat:no-repeat;background-position:0 100%}
+#txp #tgrip{position:absolute;right:-7px;top:-2px;width:16px;height:18px;padding:0;border:0;background:transparent;touch-action:none;cursor:ew-resize}
+#txp #tgrip::after{content:"";position:absolute;left:3px;top:3px;width:9px;height:9px;background:var(--acc);transform:rotate(45deg)}
+#txp #tnlb{position:absolute;left:100%;top:0;margin-left:6px;white-space:nowrap}
 </style></head><body>
 <div id="hud"><button class="qb" id="fm" aria-label="Application menu"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><button class="qb" data-c="imp" aria-label="Open DXF"><svg viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v10H3z"/></svg></button><button class="qb" data-c="dxf" aria-label="Save as DXF"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6"/></svg></button><button class="qb" data-c="pdf" aria-label="Plot"><svg viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H4v-7h16v7h-3M7 14h10v6H7z"/></svg></button><button class="qb" id="undo" aria-label="Undo"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/></svg></button><button class="qb" id="redo" aria-label="Redo"><svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H10a6 6 0 000 12h3"/></svg></button><button class="qb" id="ppb" aria-label="Properties" aria-pressed="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle class="fl" cx="8.5" cy="10" r="1.3"/><circle class="fl" cx="12" cy="7.5" r="1.3"/><circle class="fl" cx="15.5" cy="10" r="1.3"/><path d="M12 20.5c-2 0-2-2.5 0-3s3-1.5 3-3h3.5"/></svg></button><button class="qb" id="rbt" aria-label="Show or hide toolbar" aria-pressed="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M9 4v16"/></svg></button><button class="qb" id="fs" aria-label="Full screen drawing" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button></div>
 <div id="sheets"><div id="shl"></div><button id="sha" aria-label="New drawing">+</button></div>
@@ -156,7 +163,7 @@ body.fs #cmd,body.fs #stat{display:none}
 <div class="sep"></div>
 <button class="rb" id="del"><svg viewBox="0 0 24 24"><path d="M4 16l9-9 6 6-6 6H8zM8 20h12M9 12l6 6"/></svg>Erase</button>
 <button class="rb" id="edb"><svg viewBox="0 0 24 24"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/></svg>Edit</button>
-<button class="rb" id="scb2"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="10" height="10"/><path d="M14 10l6-6M15 4h5v5"/></svg>Scale</button>
+<button class="rb" data-t="rot"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 11-2.6-5.9M20 4v5h-5"/></svg>Rotate</button><button class="rb" id="scb2"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="10" height="10"/><path d="M14 10l6-6M15 4h5v5"/></svg>Scale</button>
 <div class="sep"></div>
 <button class="rb" id="fit"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5M9 9h6v6H9z"/></svg>Zoom Ext</button>
 <button class="rb" data-z="1.4"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l5 5M8 10h4M10 8v4"/></svg>Zoom +</button>
@@ -165,14 +172,14 @@ body.fs #cmd,body.fs #stat{display:none}
 <div id="wrap"><canvas id="cv"></canvas><div id="cpt" hidden></div><label id="scfl" hidden>×<input id="scf" type="number" value="1" step="any" min="0.0001" inputmode="decimal" aria-label="Scale factor"></label><input id="file" type="file" accept="image/*" hidden><input id="dfile" type="file" multiple hidden><div id="mn" hidden><button id="imp">Open…</button><button id="apic">Add pictures…</button><button id="imgb">Attach image</button><button id="sva">Save as…<span>▸</span></button><div id="svm" hidden><button id="psave">Drawing <small>.json · keeps everything</small></button><button id="dxf">AutoCAD 2013 <small>.dxf</small></button><button id="dxf12">AutoCAD R12 <small>.dxf · older</small></button></div><button id="bgb">Background<span>▸</span></button><div id="bgm" hidden></div><button id="uib">Interface size<span>▸</span></button><div id="uim" hidden></div><button id="pdf">Plot to PDF</button><button id="inp"></button><div id="bld"></div></div>
 <div id="vp">[-][Top][2D Wireframe]</div></div>
 
-<div id="pp"><div id="phead"><button class="rx" id="pgrip" aria-label="Drag to move properties"><svg viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01" stroke-width="3"/></svg></button><button class="rx" id="pclose" aria-label="Close properties">×</button></div><button class="rx" id="pdock" hidden>Dock</button><label class="rb"><svg viewBox="0 0 24 24"><circle id="pcl" cx="12" cy="12" r="8" style="fill:#fff"/></svg><span>Color</span><input id="pc" type="color" aria-label="Colour"></label><button class="rb" id="pa"><svg viewBox="0 0 24 24"><path d="M5 19L12 4l7 15M8 14h8"/></svg>Auto</button><div class="sep"></div><label class="rb"><svg viewBox="0 0 24 24"><path id="pli" d="M3 12h18"/></svg><span id="pll">Solid</span><select id="pl" aria-label="Linetype"><option value="solid">Continuous</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option><option value="dashdot">Dash-dot</option><option value="center">Center</option></select></label><label class="rb"><svg viewBox="0 0 24 24"><path id="pwi" d="M3 12h18" style="stroke-width:2"/></svg><span id="pwl">Default</span><select id="pw" aria-label="Lineweight"><option value="0.05">0.05 mm</option><option value="0.09">0.09 mm</option><option value="0.13">0.13 mm</option><option value="0.15">0.15 mm</option><option value="0.18">0.18 mm</option><option value="0.2">0.20 mm</option><option value="0.25">0.25 mm</option><option value="0.3">0.30 mm</option><option value="0.35">0.35 mm</option><option value="0.4">0.40 mm</option><option value="0.5">0.50 mm</option><option value="0.53">0.53 mm</option><option value="0.6">0.60 mm</option><option value="0.7">0.70 mm</option><option value="0.8">0.80 mm</option><option value="0.9">0.90 mm</option><option value="1">1.00 mm</option><option value="1.06">1.06 mm</option><option value="1.2">1.20 mm</option><option value="1.4">1.40 mm</option><option value="1.58">1.58 mm</option><option value="2">2.00 mm</option><option value="2.11">2.11 mm</option></select></label><div id="pimg" hidden><button class="rb" data-im="sat" aria-label="Saturation"><svg viewBox="0 0 24 24"><path d="M12 3c3.5 4.5 6 7.5 6 10.5a6 6 0 01-12 0C6 10.5 8.5 7.5 12 3z"/></svg>Saturation</button><button class="rb" data-im="br" aria-label="Brightness"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>Brightness</button><button class="rb" data-im="fade" aria-label="Fade"><svg viewBox="0 0 24 24"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6" stroke-dasharray="2 2"/></svg>Faded</button><button class="rb" data-im="crop" aria-label="Crop or clipping boundary" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 3v14h14M3 7h14v14"/></svg>Crop</button><button class="rb" data-im="reset" aria-label="Reset image"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 108-8M4 4v5h5"/></svg>Reset</button></div><button class="rb" id="pscl" hidden aria-label="Show scale base and reference"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Base / Ref</button><div class="rb" id="pref" hidden><span>Reference</span><input id="scr1" type="number" placeholder="now mm" step="any" inputmode="decimal" aria-label="Reference current length mm"><input id="scr2" type="number" placeholder="new mm" step="any" inputmode="decimal" aria-label="Reference new length mm"><button id="scm" type="button">Measure</button></div><label class="rb" id="pbase" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg><span id="pbl">Base</span><select id="scb" aria-label="Scale base"><option value="touch">Touched point</option><option value="center">Center</option><option value="origin">Origin 0,0</option><option value="corner">Opposite endpoint</option><option value="pick">Pick point</option></select></label><label class="rb"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" fill="currentColor" fill-opacity=".35"/></svg><span>Fill</span><input id="pf" type="checkbox" aria-label="Fill"></label><div class="rb tx" id="ptx" hidden><span>Text mm</span><input id="tsv" type="number" min="0.1" step="any" placeholder="Auto" aria-label="Text height in mm"><div class="stp"><button id="tsm" aria-label="Smaller">−</button><button id="tsp2" aria-label="Larger">+</button></div></div></div>
+<div id="pp"><div id="phead"><button class="rx" id="pgrip" aria-label="Drag to move properties"><svg viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01" stroke-width="3"/></svg></button><button class="rx" id="pclose" aria-label="Close properties">×</button></div><button class="rx" id="pdock" hidden>Dock</button><label class="rb"><svg viewBox="0 0 24 24"><circle id="pcl" cx="12" cy="12" r="8" style="fill:#fff"/></svg><span>Color</span><input id="pc" type="color" aria-label="Colour"></label><button class="rb" id="pa"><svg viewBox="0 0 24 24"><path d="M5 19L12 4l7 15M8 14h8"/></svg>Auto</button><div class="sep"></div><label class="rb"><svg viewBox="0 0 24 24"><path id="pli" d="M3 12h18"/></svg><span id="pll">Solid</span><select id="pl" aria-label="Linetype"><option value="solid">Continuous</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option><option value="dashdot">Dash-dot</option><option value="center">Center</option></select></label><label class="rb"><svg viewBox="0 0 24 24"><path id="pwi" d="M3 12h18" style="stroke-width:2"/></svg><span id="pwl">Default</span><select id="pw" aria-label="Lineweight"><option value="0.05">0.05 mm</option><option value="0.09">0.09 mm</option><option value="0.13">0.13 mm</option><option value="0.15">0.15 mm</option><option value="0.18">0.18 mm</option><option value="0.2">0.20 mm</option><option value="0.25">0.25 mm</option><option value="0.3">0.30 mm</option><option value="0.35">0.35 mm</option><option value="0.4">0.40 mm</option><option value="0.5">0.50 mm</option><option value="0.53">0.53 mm</option><option value="0.6">0.60 mm</option><option value="0.7">0.70 mm</option><option value="0.8">0.80 mm</option><option value="0.9">0.90 mm</option><option value="1">1.00 mm</option><option value="1.06">1.06 mm</option><option value="1.2">1.20 mm</option><option value="1.4">1.40 mm</option><option value="1.58">1.58 mm</option><option value="2">2.00 mm</option><option value="2.11">2.11 mm</option></select></label><div id="pimg" hidden><button class="rb" data-im="sat" aria-label="Saturation"><svg viewBox="0 0 24 24"><path d="M12 3c3.5 4.5 6 7.5 6 10.5a6 6 0 01-12 0C6 10.5 8.5 7.5 12 3z"/></svg>Saturation</button><button class="rb" data-im="br" aria-label="Brightness"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>Brightness</button><button class="rb" data-im="fade" aria-label="Fade"><svg viewBox="0 0 24 24"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6" stroke-dasharray="2 2"/></svg>Faded</button><button class="rb" data-im="crop" aria-label="Crop or clipping boundary" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 3v14h14M3 7h14v14"/></svg>Crop</button><button class="rb" data-im="reset" aria-label="Reset image"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 108-8M4 4v5h5"/></svg>Reset</button></div><button class="rb" id="pscl" hidden aria-label="Show scale base and reference"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Base / Ref</button><div class="rb" id="pref" hidden><span>Reference</span><input id="scr1" type="number" placeholder="now mm" step="any" inputmode="decimal" aria-label="Reference current length mm"><input id="scr2" type="number" placeholder="new mm" step="any" inputmode="decimal" aria-label="Reference new length mm"><button id="scm" type="button">Measure</button></div><label class="rb" id="pbase" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg><span id="pbl">Base</span><select id="scb" aria-label="Scale base"><option value="touch">Touched point</option><option value="center">Center</option><option value="origin">Origin 0,0</option><option value="corner">Opposite endpoint</option><option value="pick">Pick point</option></select></label><label class="rb"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" fill="currentColor" fill-opacity=".35"/></svg><span>Fill</span><input id="pf" type="checkbox" aria-label="Fill"></label><div class="rb tx" id="ptx" hidden><span>Text mm</span><input id="tsv" type="number" min="0.1" step="any" placeholder="Auto" aria-label="Text height in mm"><div class="stp"><button id="tsm" aria-label="Smaller">−</button><button id="tsp2" aria-label="Larger">+</button></div><span>Line space</span><input id="tsl" type="number" min="0.5" max="4" step="0.1" aria-label="Line spacing"><div class="stp"><button id="tlm" aria-label="Less line space">−</button><button id="tlp" aria-label="More line space">+</button></div></div></div>
 </div>
-<div id="txp" class="pal" hidden><textarea id="tt" rows="2" placeholder="Enter text" autocomplete="off" aria-label="Text"></textarea><label>Text height <input id="th" type="number" min="0.1" step="any"> mm</label><div class="fld" title="Line spacing"><span>Line</span><input id="tls" type="number" min="0.5" max="4" step="0.1" value="1.2" aria-label="Line spacing"></div><div class="nud" role="group" aria-label="Move text"><button id="tnl" aria-label="Move left">◀</button><span><button id="tnu" aria-label="Move up">▲</button><button id="tnd" aria-label="Move down">▼</button></span><button id="tnr" aria-label="Move right">▶</button></div><div class="fld" title="Move step in mm"><span>Step</span><input id="tns" type="number" min="0.01" step="any" value="1" aria-label="Move step in mm"></div><button class="tg" id="tnlb" title="New line (or Shift+Enter)">New line</button><button class="tg" id="tsa">Select all</button><button class="tg" id="tok">Add</button></div>
+<div id="txp" class="pal" hidden><div id="trl"><button id="tgrip" aria-label="Drag to set the text width" title="Drag to set the text width. Double tap to remove"></button></div><textarea id="tt" rows="2" placeholder="Enter text" autocomplete="off" aria-label="Text"></textarea><label>Text height <input id="th" type="number" min="0.1" step="any"> mm</label><div class="fld" title="Line spacing"><span>Line</span><input id="tls" type="number" min="0.5" max="4" step="0.1" value="1.2" aria-label="Line spacing"></div><div class="nud" role="group" aria-label="Move text"><button id="tnl" aria-label="Move left">◀</button><span><button id="tnu" aria-label="Move up">▲</button><button id="tnd" aria-label="Move down">▼</button></span><button id="tnr" aria-label="Move right">▶</button></div><div class="fld" title="Move step in mm"><span>Step</span><input id="tns" type="number" min="0.01" step="any" value="1" aria-label="Move step in mm"></div><button class="tg" id="tnlb" title="New line (or Shift+Enter)">New line</button><button class="tg" id="tsa">Select all</button><button class="tg" id="tok">Add</button></div>
 <div id="osm" hidden></div>
 <div id="isl" hidden><span id="isn"></span><input id="isr" type="range"><b id="isv"></b></div>
 <div id="imgp" class="pal" hidden><label>Image width <input id="iw" type="number" min="0.1" step="any"> mm</label><input id="io" type="range" min="10" max="100" value="50" aria-label="Image opacity" hidden><button class="tg" id="iadj" aria-pressed="false">Adjust</button><button class="tg" id="irm">Remove</button></div>
 <div id="scp" class="pal" hidden><b>Scale</b><input id="scs" type="range" min="-100" max="100" value="0" hidden><label><input type="checkbox" id="sau" checked> Auto apply</label><span id="scn"></span></div>
-<div id="mdp" class="pal" hidden><b id="mdn">0 selected</b><label>ΔX <input id="mdx" type="number" value="0" step="any"></label><label>ΔY <input id="mdy" type="number" value="0" step="any"></label><button class="tg" id="mmv">Move</button><button class="tg" id="mcp">Copy</button><label>Rotate <input id="mrt" type="number" value="90" step="any">°</label><button class="tg" id="mrb">Apply</button><label>Free <input id="mrs" type="range" min="-180" max="180" step="1" value="0" aria-label="Rotate freely"><b id="mrv">0°</b></label><label>Scale <input id="msc" type="number" value="2" step="any">×</label><button class="tg" id="msb">Apply</button><button class="tg" id="mcl">Close</button></div>
+<div id="mdp" class="pal" hidden><b id="mdn">0 selected</b><label>ΔX <input id="mdx" type="number" value="0" step="any"></label><label>ΔY <input id="mdy" type="number" value="0" step="any"></label><button class="tg" id="mmv">Move</button><button class="tg" id="mcp">Copy</button><label>Scale <input id="msc" type="number" value="2" step="any">×</label><button class="tg" id="msb">Apply</button><button class="tg" id="mcl">Close</button></div>
 <div id="plp" class="pal" hidden><b>Plot area</b><label><input type="radio" name="pa" value="ext" checked> Extents</label><label><input type="radio" name="pa" value="win"> Window</label><label><input type="radio" name="pa" value="disp"> Display</label><label>Page <select id="ppg"><option value="match">Match area</option><option value="a4">A4</option><option value="a3">A3</option><option value="a2">A2</option><option value="a1">A1</option><option value="a0">A0</option><option value="letter">Letter</option><option value="r169">16:9</option><option value="r43">4:3</option><option value="r11">1:1</option><option value="custom">Custom</option></select></label><span id="pcu" hidden><input id="pcw" type="number" value="297" min="10"> × <input id="pch" type="number" value="210" min="10"> mm</span><label><select id="por" disabled aria-label="Orientation"><option value="auto">Auto</option><option value="land">Landscape</option><option value="port">Portrait</option></select></label><label><input type="checkbox" id="pfit" checked> Fit to paper</label><button class="tg" id="pwb">Pick window</button><span id="pwn"></span><button class="tg" id="pgo">Plot</button><button class="tg" id="pcn">Cancel</button></div>
 <button id="kbx" hidden aria-label="Hide keyboard"><svg viewBox="0 0 24 24" style="width:20px;height:20px"><rect x="2.5" y="5" width="19" height="11" rx="1.5"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M7 12.5h10M9 19.5l3 2.5 3-2.5"/></svg>Hide keyboard</button>
 <div id="cmd"><div id="chist"></div><div id="crow"><span id="hint"></span><input id="ci" type="text" placeholder="Type a command" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Command line"></div></div>
@@ -206,7 +213,7 @@ const saveD=()=>{try{localStorage.setItem('drafter1d',JSON.stringify(D))}catch(e
 const props=()=>{const o={d:D.d,mm:D.mm};if(D.c)o.c=D.c;if(D.f)o.f=1;return o};
 const rgb=h=>[1,3,5].map(i=>(parseInt(h.substr(i,2),16)/255).toFixed(3)).join(' '),lite=h=>[1,3,5].map(i=>(.85+.15*parseInt(h.substr(i,2),16)/255).toFixed(3)).join(' ');
 const toS=p=>[V.ox+p.x*V.k,V.oy-p.y*V.k],toW=(x,y)=>({x:(x-V.ox)/V.k,y:(V.oy-y)/V.k});
-const isDraw=()=>!adj&&['line','rect','circ','dim','arc','pwin','sref'].includes(tool);
+const isDraw=()=>!adj&&['line','rect','circ','dim','arc','pwin','sref','rot'].includes(tool);
 function gs(){for(const s of [.1,.2,.5,1,2,5,10,20,50,100,200,500,1000,2000,5000,10000])if(s*V.k>=14)return s;return 20000}
 function pts(L=shapes){const r=[];for(const s of L){r.push(s.a);if(s.t=='rect')r.push(s.b,{x:s.a.x,y:s.b.y},{x:s.b.x,y:s.a.y});else if(s.t=='free')s.p.forEach(q=>r.push({x:q[0],y:q[1]}));else if(s.t=='arc')r.push(s.m,s.b);else if(s.t!='circ')r.push(s.b)}return r}
 
@@ -214,6 +221,9 @@ const OSN={end:'Endpoint',mid:'Midpoint',cen:'Center',gcen:'Geometric Center',no
 const OS=Object.fromEntries(Object.keys(OSN).map(k=>[k,0]));Object.assign(OS,{end:1,cen:1,int:1,ext:1});let OSAP=12,osAcq=null;
 try{const d=JSON.parse(localStorage.getItem('drafter1os'));if(d){if(d.m)Object.assign(OS,d.m);if(d.ap>=4&&d.ap<=40)OSAP=d.ap;if(typeof d.on=='boolean')FL.osnap=d.on}}catch(e){}
 const saveOS=()=>{try{localStorage.setItem('drafter1os',JSON.stringify({m:OS,ap:OSAP,on:FL.osnap}))}catch(e){}};
+FL.snap=FL.ortho=FL.grid=FL.dyn=FL.lwt=FL.osnap=false;FL.multi=true;
+try{const q=JSON.parse(localStorage.getItem('drafter1fl'));if(q)for(const k in FL)if(typeof q[k]=='boolean')FL[k]=q[k]}catch(e){}
+document.querySelectorAll('[data-f]').forEach(b=>b.setAttribute('aria-pressed',!!FL[b.dataset.f]));
 function osOnArc(o,P){if(!o.g)return true;const g=o.g,an=Math.atan2(P.y-o.c.y,P.x-o.c.x),t=g.ccw?md(an-g.a1):md(g.a1-an),sw=g.ccw?md(g.a2-g.a1):md(g.a1-g.a2);return t<=sw+1e-6}
 function osSegInt(a,b,c,d,ext){const r={x:b.x-a.x,y:b.y-a.y},q={x:d.x-c.x,y:d.y-c.y},den=r.x*q.y-r.y*q.x;if(Math.abs(den)<1e-12)return null;const t=((c.x-a.x)*q.y-(c.y-a.y)*q.x)/den,u=((c.x-a.x)*r.y-(c.y-a.y)*r.x)/den;if(!ext&&(t<-1e-9||t>1+1e-9||u<-1e-9||u>1+1e-9))return null;return{x:a.x+t*r.x,y:a.y+t*r.y}}
 function osSegCirc(a,b,o){const dx=b.x-a.x,dy=b.y-a.y,fx=a.x-o.c.x,fy=a.y-o.c.y,A=dx*dx+dy*dy,B=2*(fx*dx+fy*dy),C=fx*fx+fy*fy-o.r*o.r;if(A<1e-18)return[];const D=B*B-4*A*C;if(D<0)return[];const q=Math.sqrt(D),out=[];for(const t of(q<1e-12?[-B/(2*A)]:[(-B-q)/(2*A),(-B+q)/(2*A)]))if(t>=-1e-9&&t<=1+1e-9){const P={x:a.x+t*dx,y:a.y+t*dy};if(osOnArc(o,P))out.push(P)}return out}
@@ -250,14 +260,14 @@ function osSnap(p){const k=V.k,ap=OSAP/k,C=[],on=OS,sp=isDraw()&&start?start:nul
 function snap(x,y){let p=toW(x,y);
  if(FL.osnap){const r=osSnap(p);if(r)return r}
  if(FL.snap){const g=gs();p={x:Math.round(p.x/g)*g,y:Math.round(p.y/g)*g}}
- if(FL.ortho&&start&&(tool=='line'||tool=='dim')){Math.abs(p.x-start.x)>Math.abs(p.y-start.y)?p.y=start.y:p.x=start.x}
+ if(FL.ortho&&start&&(tool=='line'||tool=='dim'||tool=='rot')){Math.abs(p.x-start.x)>Math.abs(p.y-start.y)?p.y=start.y:p.x=start.x}
  return p}
 const dseg=(p,a,b)=>{const dx=b.x-a.x,dy=b.y-a.y,l=dx*dx+dy*dy;let t=l?((p.x-a.x)*dx+(p.y-a.y)*dy)/l:0;t=Math.max(0,Math.min(1,t));return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy)};
 var PT='mouse';
 function hit(x,y,px){const p=toW(x,y),P0=p,tol=(px||(PT=='touch'?24:14))/V.k;for(let i=shapes.length-1;i>=0;i--){const s=shapes[i],a=s.a,b=s.b;let d;
  if(s.t=='rect'){const c=[a,{x:b.x,y:a.y},b,{x:a.x,y:b.y}];d=Math.min(...c.map((q,j)=>dseg(p,q,c[(j+1)%4])))}
  else if(s.t=='free')d=Math.min(...s.p.map((q,j)=>j?dseg(p,{x:s.p[j-1][0],y:s.p[j-1][1]},{x:q[0],y:q[1]}):1e9));
- else if(s.t=='text'){let p=P0;if(s.r){const cr=Math.cos(-s.r*Math.PI/180),sr=Math.sin(-s.r*Math.PI/180),ux=P0.x-a.x,uy=P0.y-a.y;p={x:a.x+ux*cr-uy*sr,y:a.y+ux*sr+uy*cr}}const L=String(s.s).split('\n'),w=Math.max(...L.map(q=>q.length))*.6*s.h,lo=a.y-(L.length-1)*(s.ls||1.2)*s.h,dx=Math.max(a.x-p.x,0,p.x-a.x-w),dy=Math.max(lo-p.y,0,p.y-a.y-s.h);d=Math.hypot(dx,dy)}
+ else if(s.t=='text'){let p=P0;if(s.r){const cr=Math.cos(-s.r*Math.PI/180),sr=Math.sin(-s.r*Math.PI/180),ux=P0.x-a.x,uy=P0.y-a.y;p={x:a.x+ux*cr-uy*sr,y:a.y+ux*sr+uy*cr}}const L=txLines(s),w=(s.w>0?s.w:Math.max(...L.map(q=>q.length))*.6*s.h),lo=a.y-(L.length-1)*(s.ls||1.2)*s.h,dx=Math.max(a.x-p.x,0,p.x-a.x-w),dy=Math.max(lo-p.y,0,p.y-a.y-s.h);d=Math.hypot(dx,dy)}
  else if(s.t=='arc')d=arcHit(s,p);
  else if(s.t=='circ')d=Math.abs(Math.hypot(p.x-a.x,p.y-a.y)-Math.hypot(b.x-a.x,b.y-a.y));
  else d=dseg(p,a,b);
@@ -266,14 +276,14 @@ function shape(s,col,w,hl){const[x1,y1]=toS(s.a),[x2,y2]=toS(s.b);
  if(s.t=='arc'&&s.m){const g=arcGeom(s);cx.strokeStyle=col;cx.lineWidth=w;cx.lineJoin='round';cx.setLineDash(hl?[]:(DASH[s.d]||[]));cx.beginPath();
   if(g&&g.r*V.k<1e6){const[ox,oy]=toS(g.c);cx.arc(ox,oy,g.r*V.k,-g.a1,-g.a2,g.ccw)}else{cx.moveTo(x1,y1);cx.lineTo(x2,y2)}cx.stroke();cx.setLineDash([]);return}
  if(s.t=='free'){cx.strokeStyle=col;cx.lineWidth=w;cx.lineJoin='round';cx.lineCap='round';cx.setLineDash(hl?[]:(DASH[s.d]||[]));cx.beginPath();s.p.forEach(([x,y],i)=>{const[sx,sy]=toS({x,y});i?cx.lineTo(sx,sy):cx.moveTo(sx,sy)});cx.stroke();cx.setLineDash([]);cx.lineCap='butt';return}
- if(s.t=='text'){cx.save();cx.fillStyle=col;cx.font=Math.max(1,s.h*V.k)+'px "IBM Plex Sans",system-ui,sans-serif';const ls=String(s.s).split('\n'),st=s.h*(s.ls||1.2)*V.k;if(hl){cx.strokeStyle=col;cx.lineWidth=w;cx.lineJoin='round'}cx.translate(x1,y1);if(s.r)cx.rotate(-s.r*Math.PI/180);ls.forEach((t,k)=>{if(hl)cx.strokeText(t,0,k*st);else cx.fillText(t,0,k*st)});cx.restore();return}cx.strokeStyle=col;cx.fillStyle=col;cx.lineWidth=w;cx.beginPath();
+ if(s.t=='text'){if(tx&&tx.i>=0&&shapes[tx.i]===s)return;cx.save();cx.fillStyle=col;cx.font=Math.max(1,s.h*V.k)+'px "IBM Plex Sans",system-ui,sans-serif';const ls=txLines(s),st=s.h*(s.ls||1.2)*V.k;if(hl){cx.strokeStyle=col;cx.lineWidth=w;cx.lineJoin='round'}cx.translate(x1,y1);if(s.r)cx.rotate(-s.r*Math.PI/180);ls.forEach((t,k)=>{if(hl)cx.strokeText(t,0,k*st);else cx.fillText(t,0,k*st)});cx.restore();return}cx.strokeStyle=col;cx.fillStyle=col;cx.lineWidth=w;cx.beginPath();
  if(s.t=='rect')cx.rect(x1,y1,x2-x1,y2-y1);else if(s.t=='circ')cx.arc(x1,y1,Math.hypot(x2-x1,y2-y1),0,7);else{cx.moveTo(x1,y1);cx.lineTo(x2,y2)}
  if(s.f&&!hl&&(s.t=='rect'||s.t=='circ')){cx.save();cx.globalAlpha=.15;cx.fill();cx.restore()}cx.setLineDash(hl?[]:(DASH[s.d]||[]));cx.stroke();cx.setLineDash([]);
  if(s.t=='dim'){const an=Math.atan2(y2-y1,x2-x1),nx=-Math.sin(an)*7,ny=Math.cos(an)*7;cx.beginPath();
   for(const[x,y]of[[x1,y1],[x2,y2]]){cx.moveTo(x-nx,y-ny);cx.lineTo(x+nx,y+ny)}cx.stroke();
   cx.save();cx.translate((x1+x2)/2,(y1+y2)/2);cx.rotate(Math.abs(an)>Math.PI/2?an+Math.PI:an);cx.textAlign='center';
   cx.fillText(fmt(Math.hypot(s.b.x-s.a.x,s.b.y-s.a.y)),0,-8);cx.restore()}}
-function draw(){if(!V)return;const cs=getComputedStyle(document.documentElement),c=n=>cs.getPropertyValue(n).trim();
+function draw(){if(tx)txPos();if(!V)return;const cs=getComputedStyle(document.documentElement),c=n=>cs.getPropertyValue(n).trim();
  cx.fillStyle=c('--cbg');cx.fillRect(0,0,W,H);
  const st=gs(),a=toW(0,0),b=toW(W,H);
  if(FL.grid)for(const major of [0,1]){cx.beginPath();cx.strokeStyle=c(major?'--cgrid2':'--cgrid');cx.lineWidth=1;
@@ -285,8 +295,12 @@ function draw(){if(!V)return;const cs=getComputedStyle(document.documentElement)
  cx.lineJoin='round';cx.font='12px "IBM Plex Sans",system-ui,sans-serif';
  const ss=new Set(S());
  shapes.forEach((s,i)=>{if(ss.has(i)){cx.globalAlpha=.35;shape(s,c('--acc'),lw(s)+6,1);cx.globalAlpha=1}shape(s,s.c||c('--cink'),lw(s))});
- if(ss.size==1&&shapes[sel])for(const g of grips(shapes[sel])){const[gx,gy]=toS(g);cx.fillStyle='#2f7bf5';cx.strokeStyle='#fff';cx.lineWidth=1;cx.fillRect(gx-4,gy-4,8,8);cx.strokeRect(gx-4.5,gy-4.5,9,9)}
- if(start&&cur&&isDraw())shape({t:tool=='pwin'?'rect':tool,a:start,m:start.m,b:cur,d:'dashed',f:D.f},c('--acc'),px(D.mm))
+ if(ss.size==1&&shapes[sel]){const sh=shapes[sel];
+  if(sh.t=='text'){const B=txBox(sh),P4=[[0,B.top],[B.w,B.top],[B.w,B.bot],[0,B.bot]].map(([x,y])=>toS(txR(sh,x,y)));cx.save();cx.strokeStyle='#2f7bf5';cx.globalAlpha=.85;cx.lineWidth=1;cx.beginPath();P4.forEach((q,i)=>i?cx.lineTo(q[0],q[1]):cx.moveTo(q[0],q[1]));cx.closePath();cx.stroke();cx.restore()}
+  for(const g of grips(sh)){const[gx,gy]=toS(g);cx.fillStyle='#2f7bf5';cx.strokeStyle='#fff';cx.lineWidth=1;
+   if(g.k=='tw'||g.k=='ls'){cx.beginPath();if(g.k=='tw'){cx.moveTo(gx-5,gy-8);cx.lineTo(gx+8,gy);cx.lineTo(gx-5,gy+8)}else{cx.moveTo(gx-8,gy-5);cx.lineTo(gx+8,gy-5);cx.lineTo(gx,gy+8)}cx.closePath();cx.fill();cx.stroke()}
+   else{cx.fillRect(gx-4,gy-4,8,8);cx.strokeRect(gx-4.5,gy-4.5,9,9)}}}
+ if(start&&cur&&isDraw())shape({t:tool=='pwin'?'rect':tool=='rot'?'line':tool,a:start,m:start.m,b:cur,d:'dashed',f:D.f},c('--acc'),px(D.mm))
  if(tx&&tx.i<0){const h=parseFloat($('#th').value)||5;shape({t:'text',a:tx.a,b:tx.a,s:$('#tt').value||'Text',h,ls:parseFloat($('#tls').value)||1.2},c('--acc'),1)}
  if(stroke){cx.strokeStyle=c('--acc');cx.lineWidth=px(D.mm);cx.lineJoin='round';cx.lineCap='round';cx.beginPath();stroke.forEach((q,i)=>{const[sx,sy]=toS(q);i?cx.lineTo(sx,sy):cx.moveTo(sx,sy)});cx.stroke();cx.lineCap='butt'}
  if(cur&&cur.pt&&FL.osnap){const[x,y]=toS(cur),ty=cur.ty||'end',h=6;cx.save();cx.strokeStyle='#ff8a00';cx.lineWidth=2;cx.beginPath();
@@ -312,9 +326,9 @@ function meas(s){if(s.t=='arc'&&s.m){const g=arcGeom(s);if(g)return 'Radius '+fm
  if(s.t=='rect')return fmt(Math.abs(dx))+' × '+fmt(Math.abs(dy))+' mm';
  if(s.t=='circ')return 'Radius '+fmt(l)+' mm';
  return 'Length '+fmt(l)+' mm   Angle '+fmt((Math.atan2(dy,dx)*180/Math.PI+360)%360)+'°'}
-const CN={select:'SELECT',pan:'PAN',line:'LINE',rect:'RECTANG',circ:'CIRCLE',dim:'DIMLINEAR',text:'TEXT',free:'SKETCH',arc:'ARC',pwin:'PLOT',sref:'SCALE',sbase:'SCALE',none:'POINTER'};
+const CN={select:'SELECT',pan:'PAN',line:'LINE',rect:'RECTANG',circ:'CIRCLE',dim:'DIMLINEAR',text:'TEXT',free:'SKETCH',arc:'ARC',pwin:'PLOT',sref:'SCALE',sbase:'SCALE',rot:'ROTATE',none:'POINTER'};
 function ui(){let h='';
- const F={line:['Specify first point:','Specify next point:'],rect:['Specify first corner point:','Specify other corner point:'],circ:['Specify center point for circle:','Specify radius of circle:'],dim:['Specify first extension line origin:','Specify dimension line location:'],arc:['Specify start point of arc:','Specify second point of arc:','Specify end point of arc:'],pwin:['Specify first corner of plot window:','Specify opposite corner:'],sref:['Specify first reference point:','Specify second reference point:']};
+ const F={rot:['Specify base point:','Specify rotation angle. Drag, or tap a point:'],line:['Specify first point:','Specify next point:'],rect:['Specify first corner point:','Specify other corner point:'],circ:['Specify center point for circle:','Specify radius of circle:'],dim:['Specify first extension line origin:','Specify dimension line location:'],arc:['Specify start point of arc:','Specify second point of arc:','Specify end point of arc:'],pwin:['Specify first corner of plot window:','Specify opposite corner:'],sref:['Specify first reference point:','Specify second reference point:']};
  if(scOrig&&tool!='sref'&&tool!='sbase')h='SCALE  Touch a point and drag. The blue dot stays in place. Release to finish'+($('#sau').checked?':':', then press Enter in the number box:');
  else if(adj)h='IMAGEADJUST  Drag the image to move it, or drag a corner to resize:';
  else if(isDraw())h=CN[tool]+'  '+F[tool][start?(start.m?2:1):0];
@@ -327,7 +341,7 @@ function ui(){let h='';
  const q=cur||{x:0,y:0};$('#coord').textContent=q.x.toFixed(4)+', '+q.y.toFixed(4)+', 0.0000';$('#dtab').textContent=SH[SC].n+(shapes.length?'*':'');
  $('#undo').disabled=!hist.length;$('#redo').disabled=!redo.length;$('#del').disabled=sel<0;
  document.querySelectorAll('[data-t]').forEach(b=>b.setAttribute('aria-current',b.dataset.t==tool));syncProps()}
-function commit(){if(tool=='sref'){const len=Math.hypot(cur.x-start.x,cur.y-start.y);start=null;if(len>1e-9){$('#scr1').value=+len.toFixed(4);scRef()}scBack();return}
+function commit(){if(tool=='rot'){rotCommit();return}if(tool=='sref'){const len=Math.hypot(cur.x-start.x,cur.y-start.y);start=null;if(len>1e-9){$('#scr1').value=+len.toFixed(4);scRef()}scBack();return}
  if(tool=='pwin'){const x0=Math.min(start.x,cur.x),x1=Math.max(start.x,cur.x),y0=Math.min(start.y,cur.y),y1=Math.max(start.y,cur.y);start=null;
   if(x1-x0>1e-6&&y1-y0>1e-6){plotWin={x0,y0,x1,y1};logCmd('Plot window set.')}
   setTool(prevTool,false);plotOpen();return}
@@ -343,9 +357,9 @@ cv.addEventListener('wheel',e=>{e.preventDefault();
  zoomAt(e.offsetX,e.offsetY,e.deltaY<0?1.15:1/1.15);draw();save()},{passive:false});
 const P=new Map();let pinch=null,down=null;
 const pinchInfo=()=>{const[a,b]=[...P.values()];return{d:Math.hypot(a[0]-b[0],a[1]-b[1])||1,x:(a[0]+b[0])/2,y:(a[1]+b[1])/2,k:V.k,ox:V.ox,oy:V.oy}};
-cv.addEventListener('pointerdown',e=>{PT=e.pointerType;if(e.pointerType=='pen'){penDown=1;if(inMode=='pen'){P.clear();pinch=null}}else if(penDown&&inMode=='pen')return;
+cv.addEventListener('pointerdown',e=>{PT=e.pointerType;if(tx&&!P.size)txDone();if(e.pointerType=='pen'){penDown=1;if(inMode=='pen'){P.clear();pinch=null}}else if(penDown&&inMode=='pen')return;
  cv.setPointerCapture(e.pointerId);P.set(e.pointerId,[e.offsetX,e.offsetY]);
- if(P.size==2){if(down&&!down.had)start=null;stroke=null;mv=null;gd=null;scd=null;selBox=null;down=null;pinch=pinchInfo();return}
+ if(P.size==2){if(tool=='rot')rotRestore();if(down&&!down.had)start=null;stroke=null;mv=null;gd=null;scd=null;selBox=null;down=null;pinch=pinchInfo();return}
  down={x:e.offsetX,y:e.offsetY,had:!!start,moved:false,ox:V.ox,oy:V.oy,pan:(isDraw()||tool=='text'||tool=='free')&&!canDraw(e)};
  $('#isl').hidden=true;imgSl=null;
  if(cropOn&&IMG){const hn=hitCrop(e.offsetX,e.offsetY);if(hn){imgDrag=hn;return}}
@@ -356,11 +370,11 @@ cv.addEventListener('pointerdown',e=>{PT=e.pointerType;if(e.pointerType=='pen'){
   const d0=Math.hypot(w.x-scB.x,w.y-scB.y);scd={d0:Math.max(d0,20/V.k),k0:scK,p0:w};draw();return}
  if(down.pan)return;
  if(tool=='free'){stroke=[toW(e.offsetX,e.offsetY)];draw();return}
- if(tool=='select'){const g=gripAt(e.offsetX,e.offsetY);if(g){gd={i:g.i,k:g.k,orig:JSON.stringify(shapes[g.i]),h:0};return}
+ if(tool=='select'||tool=='none'){const g=gripAt(e.offsetX,e.offsetY);if(g){gd={i:g.i,k:g.k,orig:JSON.stringify(shapes[g.i]),h:0};return}
   const h0=hit(e.offsetX,e.offsetY);if(sel>=0&&h0>=0&&S().includes(h0)){mv={s0:snap(e.offsetX,e.offsetY),origs:S().map(i=>[i,JSON.stringify(shapes[i])]),h:0};return}}
  cur=snap(e.offsetX,e.offsetY);if(isDraw()&&!start)start=cur;draw();ui()});
 cv.addEventListener('pointermove',e=>{if(penDown&&inMode=='pen'&&e.pointerType=='touch')return;
- if(!P.has(e.pointerId)){cur=snap(e.offsetX,e.offsetY);draw();ui();return}
+ if(!P.has(e.pointerId)){cur=snap(e.offsetX,e.offsetY);if(tool=='rot'&&start)rotPrev();draw();ui();return}
  P.set(e.pointerId,[e.offsetX,e.offsetY]);
  if(P.size==2&&pinch){const n=pinchInfo(),k=Math.max(.05,Math.min(200,pinch.k*n.d/pinch.d)),wx=(pinch.x-pinch.ox)/pinch.k,wy=(pinch.oy-pinch.y)/pinch.k;
   V.k=k;V.ox=n.x-wx*k;V.oy=n.y+wy*k;draw();return}
@@ -376,7 +390,7 @@ cv.addEventListener('pointermove',e=>{if(penDown&&inMode=='pen'&&e.pointerType==
  if(Math.hypot(dx,dy)>8)down.moved=true;
  if(tool=='select'&&down.moved){selBox={x0:down.x,y0:down.y,x1:e.offsetX,y1:e.offsetY};draw();return}
  if(tool=='pan'||adj||tool=='text'||tool=='sbase'||down.pan){V.ox=down.ox+dx;V.oy=down.oy+dy;cur=toW(e.offsetX,e.offsetY)}
- else cur=snap(e.offsetX,e.offsetY);
+ else{cur=snap(e.offsetX,e.offsetY);if(tool=='rot'&&start)rotPrev()}
  draw();ui()});
 cv.addEventListener('pointerup',e=>{if(e.pointerType=='pen')penDown=0;else if(penDown&&inMode=='pen')return;P.delete(e.pointerId);
  if(imgDrag){imgDrag=null;down=null;saveImg();draw();return}
@@ -391,12 +405,12 @@ cv.addEventListener('pointerup',e=>{if(e.pointerType=='pen')penDown=0;else if(pe
  else if(tool=='select'||tool=='none'){if(selBox){const b=selBox;selBox=null;const ids=boxSelect(b.x0,b.y0,b.x1,b.y1);setSelArr(FL.multi?[...new Set([...S(),...ids])]:ids);if(tx)txClose()}
   else if(!down.moved){const h=hit(e.offsetX,e.offsetY);
    if(FL.multi){if(h>=0){const q=new Set(S());if(q.has(h))q.delete(h);else q.add(h);setSelArr([...q])}else if(hit(e.offsetX,e.offsetY,48)<0)setSelArr([])}else setSelArr(h>=0?[h]:[]);
-   if(S().length==1&&shapes[sel].t=='text')openTx(shapes[sel].a,sel);else if(tx)txClose()}}
+   if(tx)txClose()}}
  else if(tool=='text'&&!down.moved){const h=hit(e.offsetX,e.offsetY);if(h>=0&&shapes[h].t=='text')openTx(shapes[h].a,h);else openTx(snap(e.offsetX,e.offsetY),-1)}
  else if(tool=='sbase'&&!down.moved){const p=snap(e.offsetX,e.offsetY);scBase={x:p.x,y:p.y};scBack();scBaseUpdate();scSet(scK)}
  down=null;save();draw();ui()});
 cv.addEventListener('pointercancel',e=>{P.delete(e.pointerId);pinch=null;down=null;imgDrag=null;stroke=null;mv=null;gd=null;scd=null;selBox=null;if(e.pointerType=='pen')penDown=0});
-function setTool(t,log,keep){cropOn=false;if(IMG)imgPanel();if(scOrig&&!keep&&t!='sref'&&t!='sbase')scCancel();tool=t;adj=false;$('#iadj').setAttribute('aria-pressed',false);cv.style.cursor='';start=null;sel=-1;tx=null;$('#txp').hidden=true;if(log!==false)logCmd('Command: '+CN[t]);ui();draw()}
+function setTool(t,log,keep){if(tool=='rot'&&t!='rot')rotCancel();cropOn=false;if(IMG)imgPanel();if(scOrig&&!keep&&t!='sref'&&t!='sbase')scCancel();tool=t;adj=false;$('#iadj').setAttribute('aria-pressed',false);cv.style.cursor='';start=null;sel=-1;tx=null;$('#txp').hidden=true;if(log!==false)logCmd('Command: '+CN[t]);ui();draw()}
 document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const t=b.dataset.t;if(tool==t&&!adj&&!scOrig){setTool('none',false);logCmd((CN[t]||t)+' off')}else setTool(t)});
 function undo(){if(scOrig)scCancel();if(!hist.length)return;redo.push(JSON.stringify(shapes));shapes=JSON.parse(hist.pop());sel=-1;start=null;save();draw();ui()}
 function redoIt(){if(scOrig)scCancel();if(!redo.length)return;hist.push(JSON.stringify(shapes));shapes=JSON.parse(redo.pop());sel=-1;save();draw();ui()}
@@ -412,7 +426,7 @@ document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>tog(b.dataset.f))
 addEventListener('keydown',e=>{if(e.key=='Escape'&&scOrig){e.preventDefault();if(e.target.blur)e.target.blur();if(tool=='sref'||tool=='sbase'){start=null;scBack()}else scExit();return}
  if(e.target.tagName=='INPUT'||e.target.tagName=='TEXTAREA'){if(e.key=='Escape')txClose();return}
  if((e.ctrlKey||e.metaKey)&&e.key=='a'){e.preventDefault();selAll();return}
- if(e.key=='Escape'&&sel>=0){sel=-1;draw();ui();return}if(e.key=='Escape'){start=null;draw();ui()}else if(e.key=='Delete'||e.key=='Backspace')del();else if((e.ctrlKey||e.metaKey)&&e.key=='z'){e.preventDefault();e.shiftKey?redoIt():undo()}});
+ if(e.key=='Escape'&&tool=='rot'){setTool('none',false);draw();ui();return}if(e.key=='Escape'&&sel>=0){sel=-1;draw();ui();return}if(e.key=='Escape'){start=null;draw();ui()}else if(e.key=='Delete'||e.key=='Backspace')del();else if((e.ctrlKey||e.metaKey)&&e.key=='z'){e.preventDefault();e.shiftKey?redoIt():undo()}});
 matchMedia('(prefers-color-scheme:dark)').addEventListener('change',draw);
 function saveImg(){try{if(IMG)localStorage.setItem('drafter1img',JSON.stringify({url:IMG.url,x:IMG.x,y:IMG.y,w:IMG.w,o:IMG.o,sat:IMG.sat,br:IMG.br,cr:IMG.cr}));else localStorage.removeItem('drafter1img')}catch(e){}}
 function useImg(url,state){const el=new Image();el.onload=()=>{const t=state?null:toW(20,20);IMG=state||{x:t.x,y:t.y,w:+((W-40)/V.k).toFixed(2),o:.5};IMG.el=el;IMG.url=url;if(PEND&&!state){IMG.x=PEND.x;IMG.y=PEND.y;IMG.w=+PEND.w.toFixed(3);PEND=null}if(IMG.sat==null)IMG.sat=100;if(IMG.br==null)IMG.br=100;if(!IMG.cr)IMG.cr=null;$('#imgp').hidden=false;if(!state){$('#pp').hidden=false;$('#ppb').setAttribute('aria-pressed',true)}imgPanel();$('#iw').value=IMG.w;$('#io').value=IMG.o*100;draw();saveImg()};el.src=url}
@@ -439,7 +453,7 @@ function buildPdf(win,fit,pg){
  if(win)c+='q '+n(X(b.x0))+' '+n(Y(b.y0))+' '+n((b.x1-b.x0)*s)+' '+n((b.y1-b.y0)*s)+' re W n\n';
  for(const t of shapes){const a=t.a,e=t.b,x1=X(a.x),y1=Y(a.y),x2=X(e.x),y2=Y(e.y),fl=t.f&&(t.t=='rect'||t.t=='circ'),rc=rgb(t.c||'#000000'),rf=fl?lite(t.c||'#000000'):rc;
   c+=rc+' RG '+rf+' rg '+n(lmm(t)*2.835)+' w ['+(DASH[t.d]||[]).map(v=>n(v*.5)).join(' ')+'] 0 d\n';
-  if(t.t=='text')c+='BT /F1 '+n(t.h*s)+' Tf 1 0 0 1 '+n(x1)+' '+n(y1)+' Tm ('+t.s.replace(/[^\x20-\x7e]/g,'?').replace(/([\\()])/g,'\\$1')+') Tj ET\n';
+  if(t.t=='text'){const q=(t.r||0)*Math.PI/180,co=Math.cos(q),si=Math.sin(q);txLines(t).forEach((ln,k)=>{const d=k*t.h*(t.ls||1.2)*s;c+='BT /F1 '+n(t.h*s)+' Tf '+n(co)+' '+n(si)+' '+n(-si)+' '+n(co)+' '+n(x1+si*d)+' '+n(y1-co*d)+' Tm ('+ln.replace(/[^\x20-\x7e]/g,'?').replace(/([\\()])/g,'\\$1')+') Tj ET\n'})}
   else if(t.t=='arc')c+=arcPdf(t,X,Y,n);
   else if(t.t=='free')c+=t.p.map(([x,y],i)=>n(X(x))+' '+n(Y(y))+(i?' l':' m')).join(' ')+' S\n';
   else if(t.t=='rect')c+=n(x1)+' '+n(y1)+' '+n(x2-x1)+' '+n(y2-y1)+' re '+(fl?'B':'S')+'\n';
@@ -479,17 +493,27 @@ function hitImg(px,py){const r=imgRect();
   if(Math.hypot(px-hx,py-hy)<=18){const h=IMG.w*IMG.el.naturalHeight/IMG.el.naturalWidth;return{m:'scale',l:!!rt,t:!!bt,ax:rt?IMG.x:IMG.x+IMG.w,ay:bt?IMG.y:IMG.y-h}}
  if(px>=r.x&&px<=r.x+r.w&&py>=r.y&&py<=r.y+r.h)return{m:'move'};return null}
 $('#iadj').onclick=e=>{adj=!adj;start=null;e.currentTarget.setAttribute('aria-pressed',adj);cv.style.cursor=adj?'move':'';draw();ui()};
-function openTx(a,i){const was=tx&&tx.i<0&&i<0,s=i>=0?shapes[i]:null;tx={a:{x:a.x,y:a.y},i};
+function txPos(){const p=$('#txp'),t=$('#tt');if(!tx||p.hidden)return;const [sx,sy]=toS(tx.a),h=parseFloat($('#th').value)||5,ls=parseFloat($('#tls').value)||1.2,fs=Math.max(11,h*V.k),q=fs/Math.max(1,h*V.k),bw=tx.w>0;
+ const L=bw?txLines({s:t.value,h,w:tx.w}):String(t.value).split('\n'),mw=bw?tx.w*V.k*q:Math.max(...L.map(z=>txW(z||' ',h)))*V.k*q;
+ t.style.whiteSpace=bw?'pre-wrap':'pre';t.wrap=bw?'soft':'off';t.style.fontSize=fs+'px';t.style.lineHeight=(fs*ls)+'px';t.style.width=Math.max(70,bw?mw:mw+fs*1.2)+'px';t.style.height=(Math.max(L.length,1)*fs*ls)+'px';
+ $('#trl').style.width=(Math.max(70,bw?mw:mw+fs*1.2)+10)+'px';
+ p.style.left=(sx-4)+'px';p.style.top=(sy-(fs*ls*.5+fs*.3)-1-16)+'px'}
+function openTx(a,i){const was=tx&&tx.i<0&&i<0,s=i>=0?shapes[i]:null,w0=was?tx.w:(s&&s.w>0?s.w:0);tx={a:{x:a.x,y:a.y},i,w:w0};
  if(!was){$('#tt').value=s?s.s:'';$('#th').value=s?s.h:(D.th||+(16/V.k).toFixed(2));$('#tls').value=s?(s.ls||1.2):(D.ls||1.2)}
- $('#tok').textContent=s?'Done':'Add';$('#txp').hidden=false;$('#tt').focus();try{const t=$('#tt');t.setSelectionRange(t.value.length,t.value.length)}catch(e){}draw();ui()}
+ $('#tok').textContent=s?'Done':'Add';$('#txp').hidden=false;txPos();$('#tt').focus();try{const t=$('#tt');t.setSelectionRange(t.value.length,t.value.length)}catch(e){}draw();ui()}
 function txClose(){tx=null;$('#txp').hidden=true;draw();ui()}
 function txDone(){if(tx){const v=$('#tt').value.trim(),h=parseFloat($('#th').value)||5;
- if(tx.i<0){if(v){hist.push(JSON.stringify(shapes));redo=[];shapes.push(Object.assign({t:'text',a:tx.a,b:{x:tx.a.x,y:tx.a.y},s:v,h,ls:parseFloat($('#tls').value)||1.2},props()));save()}}
+ if(tx.i<0){if(v){hist.push(JSON.stringify(shapes));redo=[];shapes.push(Object.assign({t:'text',a:tx.a,b:{x:tx.a.x,y:tx.a.y},s:v,h,ls:parseFloat($('#tls').value)||1.2},tx.w>0?{w:tx.w}:{},props()));save()}}
  else{if(!v){if(!tx.d){hist.push(JSON.stringify(shapes));redo=[]}shapes.splice(tx.i,1);sel=-1}save()}}
  txClose()}
-function txUpd(){if(!tx)return;if(tx.i>=0){if(!tx.d){hist.push(JSON.stringify(shapes));redo=[];tx.d=1}const s=shapes[tx.i],h=parseFloat($('#th').value),l=parseFloat($('#tls').value);s.s=$('#tt').value;if(h>0)s.h=h;if(l>0)s.ls=l}draw()}
-$('#tt').oninput=txUpd;$('#th').oninput=txUpd;$('#tls').oninput=txUpd;$('#tok').onclick=txDone;
+function txUpd(){if(!tx)return;if(tx.i>=0){if(!tx.d){hist.push(JSON.stringify(shapes));redo=[];tx.d=1}const s=shapes[tx.i],h=parseFloat($('#th').value),l=parseFloat($('#tls').value);s.s=$('#tt').value;if(h>0)s.h=h;if(l>0)s.ls=l;if(tx.w>0)s.w=tx.w;else delete s.w}txPos();draw()}
+$('#tt').wrap='off';$('#wrap').appendChild($('#txp'));$('#tt').oninput=txUpd;$('#th').oninput=txUpd;$('#tls').oninput=txUpd;$('#tok').onclick=txDone;
 $('#tt').onkeydown=e=>{if(e.key=='Enter'&&!e.shiftKey){e.preventDefault();txDone()}};
+{const g=$('#tgrip');let gd2=null;
+ g.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();g.setPointerCapture(e.pointerId);gd2={};});
+ g.addEventListener('pointermove',e=>{if(!gd2||!tx)return;const h=parseFloat($('#th').value)||5,fs=Math.max(11,h*V.k),q=fs/Math.max(1,h*V.k),r0=$('#tt').getBoundingClientRect();tx.w=Math.max(h*2,(e.clientX-r0.left)/(V.k*q));txUpd()});
+ g.addEventListener('pointerup',e=>{gd2=null});
+ g.addEventListener('dblclick',e=>{e.preventDefault();if(!tx)return;tx.w=0;txUpd()})}
 $('#tnlb').addEventListener('pointerdown',e=>e.preventDefault());
 $('#tnlb').onclick=()=>{const t=$('#tt'),a=t.selectionStart,b=t.selectionEnd;t.focus();t.value=t.value.slice(0,a)+'\n'+t.value.slice(b);t.setSelectionRange(a+1,a+1);txUpd()};
 $('#tsa').onclick=()=>{const t=$('#tt');t.focus();t.select();try{t.setSelectionRange(0,t.value.length)}catch(e){}};
@@ -521,7 +545,9 @@ const num=(e,c)=>{const q=e.g.find(p=>p[0]==c);return q?parseFloat(q[1])||0:0},a
 const ACI={1:'#e03131',2:'#e6b800',3:'#2f9e44',4:'#0c8599',5:'#1c7ed6',6:'#ae3ec9'};
 function dxfStyle(e){const o={},q=e.g.find(p=>p[0]==62);if(q&&ACI[q[1]])o.c=ACI[q[1]];const l=e.g.find(p=>p[0]==6);
  if(l){const n=l[1].toUpperCase();o.d=/CENTER/.test(n)?'center':/DASHDOT/.test(n)?'dashdot':/DASH|HIDDEN/.test(n)?'dashed':/DOT/.test(n)?'dotted':'solid'}return o}
-const txW=(t,h)=>{cx.save();cx.font='100px "IBM Plex Sans",system-ui,sans-serif';const w=cx.measureText(t).width/100*h;cx.restore();return w};
+function txW(t,h){cx.save();cx.font='100px "IBM Plex Sans",system-ui,sans-serif';const w=cx.measureText(t).width/100*h;cx.restore();return w}
+const _tl=new Map();
+function txLines(s){const src=String(s.s).split('\n');if(!(s.w>0))return src;const key=s.s+'|'+s.h+'|'+s.w;let o=_tl.get(key);if(o)return o;o=[];for(const ln of src){let cur='';for(const wd of ln.split(' ')){const t=cur?cur+' '+wd:wd;if(cur&&txW(t,s.h)>s.w){o.push(cur);cur=wd}else cur=t}o.push(cur)}if(_tl.size>3000)_tl.clear();_tl.set(key,o);return o}
 var PEND=null;
 function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
  for(let j=0;j+1<L.length;j+=2){const c=parseInt(L[j],10),v=L[j+1];
@@ -548,7 +574,7 @@ function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
    else{rot=num(e,50);str=(e.g.find(p=>p[0]==1)||[0,''])[1]}
    str=str.replace(/%%[cC]/g,'Ø').replace(/%%[dD]/g,'°').replace(/%%[pP]/g,'±').replace(/%%[uUoO]/g,'');
    let lines=str.split('\n');
-   const rw=mt?num(e,41):0;
+   const rw=mt?num(e,41):0;let paras=lines.map(q=>q.replace(/\s+$/,''));while(paras.length&&!paras[paras.length-1])paras.pop();
    if(mt&&rw>0){const o=[];for(const ln of lines){let cur='';for(const wd of ln.split(' ')){const t=cur?cur+' '+wd:wd;if(cur&&txW(t,h)>rw){o.push(cur);cur=wd}else cur=t}o.push(cur)}lines=o}
    lines=lines.map(q=>q.replace(/\s+$/,''));while(lines.length&&!lines[lines.length-1])lines.pop();
    if(!lines.length)continue;
@@ -561,7 +587,7 @@ function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
     ay=vj==1?.25*h:vj==2?-.5*h:vj==3?-h:0;if(hj==4)ay=-.5*h}
    const q=rot*Math.PI/180,c=Math.cos(q),sn=Math.sin(q);
    const sx=x+ax*c-ay*sn,sy=y+ax*sn+ay*c;
-   out.push(Object.assign({t:'text',a:P(sx,sy),b:P(sx,sy),s:lines.join('\n'),h},ls!=1.2?{ls}:{},rot?{r:+rot.toFixed(3)}:{},st))}
+   out.push(Object.assign({t:'text',a:P(sx,sy),b:P(sx,sy),s:(rw>0?paras:lines).join('\n'),h},ls!=1.2?{ls}:{},rw>0?{w:rw}:{},rot?{r:+rot.toFixed(3)}:{},st))}
   else if(T=='IMAGE'){const u=P(num(e,11),num(e,21)),v=P(num(e,12),num(e,22)),pw=num(e,13)||1,ph=num(e,23)||1,w=Math.hypot(u.x,u.y)*pw,hh=Math.hypot(v.x,v.y)*ph,x=num(e,10),y=num(e,20),hd=(e.g.find(p=>p[0]==340)||[0,''])[1];imgs.push({x,y:y+hh,w,hd})}
   else if(T!='VERTEX'&&T!='SEQEND')skip++}
   {const defs={};let cd=null;for(let j=0;j+1<L.length;j+=2){const c=parseInt(L[j],10),v=L[j+1].trim();if(c===0){cd=v=='IMAGEDEF'?{}:null}else if(cd){if(c===5)cd.h=v;else if(c===1){cd.n=v;defs[cd.h]=v}}}
@@ -635,7 +661,7 @@ function buildDxf2013(){const LT={dashed:'DASHED',dotted:'DOT',dashdot:'DASHDOT'
   else if(sh.t=='free'){if(sh.p.length>1)lwp(sh,sh.p,false)}
   else if(sh.t=='arc'){const q=arcGeom(sh);if(!q)line(sh,a.x,a.y,b.x,b.y);else{const dg=v=>md(v)*180/Math.PI;base('ARC',sh,'AcDbCircle');pt(10,q.c.x,q.c.y);g(40,q.r);g(100,'AcDbArc');g(50,dg(q.ccw?q.a1:q.a2));g(51,dg(q.ccw?q.a2:q.a1))}}
   else if(sh.t=='circ'){base('CIRCLE',sh,'AcDbCircle');pt(10,a.x,a.y);g(40,Math.hypot(b.x-a.x,b.y-a.y))}
-  else if(sh.t=='text')String(sh.s).split('\n').forEach((t,k)=>{const d=-k*sh.h*(sh.ls||1.2),q=(sh.r||0)*Math.PI/180;txt(sh,a.x-d*Math.sin(q),a.y+d*Math.cos(q),sh.h,t,sh.r||0)})}
+  else if(sh.t=='text')txLines(sh).forEach((t,k)=>{const d=-k*sh.h*(sh.ls||1.2),q=(sh.r||0)*Math.PI/180;txt(sh,a.x-d*Math.sin(q),a.y+d*Math.cos(q),sh.h,t,sh.r||0)})}
  const ENT=o;o='';
  // header
  g(0,'SECTION');g(2,'HEADER');g(9,'$ACADVER');g(1,'AC1027');g(9,'$HANDSEED');g(5,H());g(9,'$INSBASE');pt(10,0,0);g(9,'$EXTMIN');pt(10,ext.x0,ext.y0);g(9,'$EXTMAX');pt(10,ext.x1,ext.y1);g(9,'$LTSCALE');g(40,1);g(9,'$INSUNITS');g(70,4);g(9,'$MEASUREMENT');g(70,1);g(9,'$LWDISPLAY');g(290,1);g(0,'ENDSEC');
@@ -690,7 +716,7 @@ function buildDxf(){const LT={dashed:'DASHED',dotted:'DOT',dashdot:'DASHDOT',cen
   else if(s.t=='free'){g(0,'POLYLINE');base(s);g(66,1);g(70,0);for(const[x,y]of s.p){g(0,'VERTEX');g(8,'0');pt(10,x,y)}g(0,'SEQEND');g(8,'0')}
   else if(s.t=='arc'){const q=arcGeom(s);if(!q)line(s,a.x,a.y,b.x,b.y);else{const dg=v=>md(v)*180/Math.PI;g(0,'ARC');base(s);pt(10,q.c.x,q.c.y);g(40,q.r);g(50,dg(q.ccw?q.a1:q.a2));g(51,dg(q.ccw?q.a2:q.a1))}}
   else if(s.t=='circ'){g(0,'CIRCLE');base(s);pt(10,a.x,a.y);g(40,Math.hypot(b.x-a.x,b.y-a.y))}
-  else if(s.t=='text')String(s.s).split('\n').forEach((t,k)=>{const d=-k*s.h*(s.ls||1.2),q=(s.r||0)*Math.PI/180;txt(s,a.x-d*Math.sin(q),a.y+d*Math.cos(q),s.h,t,s.r||0)})}
+  else if(s.t=='text')txLines(s).forEach((t,k)=>{const d=-k*s.h*(s.ls||1.2),q=(s.r||0)*Math.PI/180;txt(s,a.x-d*Math.sin(q),a.y+d*Math.cos(q),s.h,t,s.r||0)})}
  g(0,'ENDSEC');g(0,'EOF');return o}
 $('#dxf').onclick=async()=>{
  if(!shapes.length){flash('Draw something first, then export it');return}
@@ -728,18 +754,20 @@ function arcHit(s,p){const g=arcGeom(s);if(!g)return dseg(p,s.a,s.b);const an=Ma
 function arcPdf(t,X,Y,n){const g=arcGeom(t);if(!g)return n(X(t.a.x))+' '+n(Y(t.a.y))+' m '+n(X(t.b.x))+' '+n(Y(t.b.y))+' l S\n';
  const sw=g.ccw?md(g.a2-g.a1):-md(g.a1-g.a2),k=Math.max(8,Math.ceil(Math.abs(sw)/.08));let o='';
  for(let i=0;i<=k;i++){const an=g.a1+sw*i/k;o+=n(X(g.c.x+g.r*Math.cos(an)))+' '+n(Y(g.c.y+g.r*Math.sin(an)))+(i?' l ':' m ')}return o+'S\n'}
+function txBox(s){const L=txLines(s),h=s.h,ls=s.ls||1.2,w=s.w>0?s.w:Math.max(...L.map(q=>txW(q||' ',h)));return{w,n:L.length,top:h*.95,bot:-((L.length-1)*ls*h+h*.3),ls,h}}
+function txR(s,x,y){const q=(s.r||0)*Math.PI/180,c=Math.cos(q),sn=Math.sin(q);return{x:s.a.x+x*c-y*sn,y:s.a.y+x*sn+y*c}}
 function grips(s){const a=s.a,b=s.b;
  if(s.t=='rect'){const x0=Math.min(a.x,b.x),x1=Math.max(a.x,b.x),y0=Math.min(a.y,b.y),y1=Math.max(a.y,b.y),mx=(x0+x1)/2,my=(y0+y1)/2;
   return[{x:x0,y:y0,k:'bl'},{x:x1,y:y0,k:'br'},{x:x1,y:y1,k:'tr'},{x:x0,y:y1,k:'tl'},{x:mx,y:y0,k:'bm'},{x:x1,y:my,k:'rm'},{x:mx,y:y1,k:'tm'},{x:x0,y:my,k:'lm'}]}
  if(s.t=='circ'){const r=Math.hypot(b.x-a.x,b.y-a.y);return[{x:a.x,y:a.y,k:'c'},{x:a.x+r,y:a.y,k:'r'},{x:a.x-r,y:a.y,k:'r'},{x:a.x,y:a.y+r,k:'r'},{x:a.x,y:a.y-r,k:'r'}]}
  if(s.t=='arc')return[{x:a.x,y:a.y,k:'a'},{x:s.m.x,y:s.m.y,k:'m'},{x:b.x,y:b.y,k:'b'}];
- if(s.t=='text')return[{x:a.x,y:a.y,k:'mv'}];
+ if(s.t=='text'){const B=txBox(s);return[Object.assign(txR(s,0,B.top),{k:'mv'}),Object.assign(txR(s,B.w,(B.top+B.bot)/2),{k:'tw'})].concat(B.n>1?[Object.assign(txR(s,B.w/2,B.bot),{k:'ls'})]:[])}
  if(s.t=='free')return[{x:a.x,y:a.y,k:'mv'},{x:b.x,y:b.y,k:'mv'}];
  return[{x:a.x,y:a.y,k:'a'},{x:b.x,y:b.y,k:'b'},{x:(a.x+b.x)/2,y:(a.y+b.y)/2,k:'mid'}]}
 function crossh(){const[x,y]=cur?toS(cur):[W/2,H/2],L=Math.min(46,Math.max(W,H)*.06);
  cx.save();cx.strokeStyle=INK;cx.lineWidth=1;cx.beginPath();cx.moveTo(x-L,y+.5);cx.lineTo(x+L,y+.5);cx.moveTo(x+.5,y-L);cx.lineTo(x+.5,y+L);cx.stroke();
  if(tool=='select')cx.strokeRect(x-5,y-5,10,10);cx.restore()}
-function dynTip(c){if(!FL.dyn||!start||!cur||!isDraw())return;const[x,y]=toS(cur),t=meas({t:tool=='pwin'?'rect':tool,a:start,m:start.m,b:cur}).replace(/   /g,'  ');
+function dynTip(c){if(!FL.dyn||!start||!cur||!isDraw())return;const[x,y]=toS(cur),t=meas({t:tool=='pwin'?'rect':tool=='rot'?'line':tool,a:start,m:start.m,b:cur}).replace(/   /g,'  ');
  cx.save();cx.font='12px "Segoe UI",system-ui,sans-serif';const w=cx.measureText(t).width+14;let bx=x+16,by=y+16;if(bx+w>W-4)bx=x-w-16;if(by+24>H-4)by=y-40;
  cx.fillStyle='rgba(30,36,43,.94)';cx.strokeStyle=c('--line');cx.lineWidth=1;cx.fillRect(bx,by,w,22);cx.strokeRect(bx+.5,by+.5,w-1,21);cx.fillStyle='#fff';cx.fillText(t,bx+7,by+15);cx.restore()}
 function ucs(){let x=V.ox,y=V.oy;if(x<30||x>W-60||y<60||y>H-30){x=36;y=H-36}
@@ -760,7 +788,7 @@ $('#osa').onclick=osOpen;
 addEventListener('pointerdown',e=>{const m=$('#osm');if(!m.hidden&&!m.contains(e.target)&&!$('#osa').contains(e.target))m.hidden=true},true);
 addEventListener('keydown',e=>{if(e.key=='Escape')$('#osm').hidden=true});
 $('[data-f="osnap"]').setAttribute('aria-pressed',FL.osnap);
-function tog(k){FL[k]=!FL[k];if(k=='osnap')try{saveOS()}catch(e){}const b=document.querySelector('[data-f="'+k+'"]');if(b)b.setAttribute('aria-pressed',FL[k]);draw();logCmd('<'+FN[k]+(FL[k]?' on>':' off>'))}
+function tog(k){FL[k]=!FL[k];try{localStorage.setItem('drafter1fl',JSON.stringify(FL))}catch(e){}if(k=='osnap')try{saveOS()}catch(e){}const b=document.querySelector('[data-f="'+k+'"]');if(b)b.setAttribute('aria-pressed',FL[k]);draw();logCmd('<'+FN[k]+(FL[k]?' on>':' off>'))}
 const ALIAS={L:'line',LINE:'line',A:'arc',ARC:'arc',REC:'rect',RECT:'rect',RECTANG:'rect',RECTANGLE:'rect',C:'circ',CIRCLE:'circ',DLI:'dim',DIMLINEAR:'dim',DIM:'dim',T:'text',TEXT:'text',DT:'text',MT:'text',SKETCH:'free',P:'pan',PAN:'pan',SELECT:'select',M:'select',MOVE:'select'};
 function logCmd(t){cpMsg=t;cpT=Date.now();clearTimeout(cpTm);cpTm=setTimeout(()=>{try{draw()}catch(e){}},3100);setTimeout(()=>{try{draw()}catch(e){}},0);const d=$('#chist'),p=document.createElement('div');p.textContent=t;d.appendChild(p);while(d.children.length>60)d.removeChild(d.firstChild);d.scrollTop=d.scrollHeight}
 let lastCmd='',zoomPend=0;
@@ -841,7 +869,7 @@ pg.addEventListener('pointermove',e=>{if(!pd2)return;if(!pp.classList.contains('
 pg.addEventListener('pointerup',()=>{pd2=null});pg.addEventListener('pointercancel',()=>{pd2=null});
 $('#pdock').onclick=()=>{pp.classList.remove('fl');pp.style.left=pp.style.top='';$('#pdock').hidden=true};
 const LTN={solid:'Solid',dashed:'Dashed',dotted:'Dotted',dashdot:'Dash-dot',center:'Center'},LWN={'1':'Thin','1.8':'Default','3':'Thick','5':'Heavy'},LDA={solid:'',dashed:'6 3',dotted:'1 3',dashdot:'6 2 1 2',center:'8 2 2 2'},LWS={'1':1,'1.8':2,'3':3.5,'5':5};
-function ppLab(){$('#pcl').style.fill=$('#pc').value;$('#pll').textContent=LTN[$('#pl').value]||'';$('#pwl').textContent=((+$('#pw').value||.35).toFixed(2)+' mm');$('#pli').style.strokeDasharray=LDA[$('#pl').value]||'';{const q=sel>=0?shapes[sel]:null;if(document.activeElement!==$('#tsv'))$('#tsv').value=q&&q.t=='text'?q.h:(D.th||'')}$('#pwi').style.strokeWidth=Math.max(1,(+$('#pw').value||.35)*4)}
+function ppLab(){$('#pcl').style.fill=$('#pc').value;$('#pll').textContent=LTN[$('#pl').value]||'';$('#pwl').textContent=((+$('#pw').value||.35).toFixed(2)+' mm');$('#pli').style.strokeDasharray=LDA[$('#pl').value]||'';{const q=sel>=0?shapes[sel]:null;if(document.activeElement!==$('#tsv'))$('#tsv').value=q&&q.t=='text'?q.h:(D.th||'');if(document.activeElement!==$('#tsl'))$('#tsl').value=q&&q.t=='text'?(q.ls||1.2):(D.ls||1.2)}$('#pwi').style.strokeWidth=Math.max(1,(+$('#pw').value||.35)*4)}
 for(const id of['pc','pl','pw'])$('#'+id).addEventListener('input',ppLab);
 ppLab();
 const tsv=$('#tsv');
@@ -853,6 +881,11 @@ tsv.addEventListener('change',()=>{delete tsv.dataset.d});
 function tsStep(d){const q=sel>=0?shapes[sel]:null;let v=parseFloat(tsv.value);if(!(v>0))v=q&&q.t=='text'?q.h:(D.th||+(16/V.k).toFixed(2));
  const st=v<5?.5:1;v=Math.max(.1,Math.round((v+d*st)*10)/10);tsv.value=v;tsv.oninput();delete tsv.dataset.d}
 $('#tsm').onclick=()=>tsStep(-1);$('#tsp2').onclick=()=>tsStep(1);
+const tsl=$('#tsl');
+tsl.oninput=()=>{const v=parseFloat(tsl.value),q=sel>=0?shapes[sel]:null;if(!(v>0))return;if(q&&q.t=='text'){if(!tsl.dataset.d){hist.push(JSON.stringify(shapes));redo=[];tsl.dataset.d=1}q.ls=v;save()}else{D.ls=v;saveD()}$('#tls').value=v;txPos();ppLab();draw()};
+tsl.addEventListener('change',()=>{delete tsl.dataset.d});
+function tlStep(d){let v=parseFloat(tsl.value);if(!(v>0))v=1.2;tsl.value=Math.max(.5,Math.min(4,Math.round((v+d*.1)*10)/10));tsl.oninput();delete tsl.dataset.d}
+$('#tlm').onclick=()=>tlStep(-1);$('#tlp').onclick=()=>tlStep(1);
 const kbx=$('#kbx'),vv=window.visualViewport;
 const typing=()=>{const a=document.activeElement;return !!a&&((a.tagName=='INPUT'&&!['checkbox','color','range','file'].includes(a.type))||a.tagName=='TEXTAREA')};
 function kbPos(){const t=typing();kbx.hidden=!t;if(!t)return;const off=vv?Math.max(0,innerHeight-(vv.height+vv.offsetTop)):0;kbx.style.bottom=(off+8)+'px'}
@@ -884,7 +917,7 @@ function shapeBox(s){const P=[];
  if(s.t=='circ'){const r=Math.hypot(s.b.x-s.a.x,s.b.y-s.a.y);return{x0:s.a.x-r,x1:s.a.x+r,y0:s.a.y-r,y1:s.a.y+r}}
  if(s.t=='free')s.p.forEach(q=>P.push({x:q[0],y:q[1]}));
  else if(s.t=='arc'){const g=arcGeom(s);if(g){const sw=g.ccw?md(g.a2-g.a1):-md(g.a1-g.a2);for(let i=0;i<=24;i++){const an=g.a1+sw*i/24;P.push({x:g.c.x+g.r*Math.cos(an),y:g.c.y+g.r*Math.sin(an)})}}else P.push(s.a,s.b)}
- else if(s.t=='text'){const L=String(s.s).split('\n');P.push(s.a,{x:s.a.x+Math.max(...L.map(q=>q.length))*.6*s.h,y:s.a.y+s.h},{x:s.a.x,y:s.a.y-(L.length-1)*(s.ls||1.2)*s.h})}
+ else if(s.t=='text'){const L=txLines(s);P.push(s.a,{x:s.a.x+(s.w>0?s.w:Math.max(...L.map(q=>q.length))*.6*s.h),y:s.a.y+s.h},{x:s.a.x,y:s.a.y-(L.length-1)*(s.ls||1.2)*s.h})}
  else P.push(s.a,s.b);
  const xs=P.map(q=>q.x),ys=P.map(q=>q.y);return{x0:Math.min(...xs),x1:Math.max(...xs),y0:Math.min(...ys),y1:Math.max(...ys)}}
 function segRect(a,b,R){let t0=0,t1=1;const dx=b.x-a.x,dy=b.y-a.y;
@@ -905,33 +938,38 @@ function gripSet(s,k,p){const a=s.a,b=s.b;
   if(k=='bl'){x0=p.x;y0=p.y}else if(k=='br'){x1=p.x;y0=p.y}else if(k=='tr'){x1=p.x;y1=p.y}else if(k=='tl'){x0=p.x;y1=p.y}
   else if(k=='bm')y0=p.y;else if(k=='tm')y1=p.y;else if(k=='lm')x0=p.x;else if(k=='rm')x1=p.x;
   s.a={x:Math.min(x0,x1),y:Math.min(y0,y1)};s.b={x:Math.max(x0,x1),y:Math.max(y0,y1)}}
+ else if(s.t=='text'){const q=(s.r||0)*Math.PI/180,c=Math.cos(q),sn=Math.sin(q),dx=p.x-a.x,dy=p.y-a.y,lx=dx*c+dy*sn,ly=-dx*sn+dy*c;
+  if(k=='tw')s.w=Math.max(s.h*2,lx);else if(k=='ls'){const n=txLines(s).length;if(n>1)s.ls=+Math.max(.5,Math.min(4,(-ly-s.h*.3)/((n-1)*s.h))).toFixed(2)}else{const o=s.h*.95;moveS(s,p.x+o*sn-a.x,p.y-o*c-a.y)}}
  else moveS(s,p.x-a.x,p.y-a.y)}
 function selCenter(ids){const bb=ids.map(i=>shapeBox(shapes[i]));return{x:(Math.min(...bb.map(b=>b.x0))+Math.max(...bb.map(b=>b.x1)))/2,y:(Math.min(...bb.map(b=>b.y0))+Math.max(...bb.map(b=>b.y1)))/2}}
 function mapS(s,fn){s.a=fn(s.a);s.b=fn(s.b);if(s.m)s.m=fn(s.m);if(s.p)s.p=s.p.map(q=>{const r=fn({x:q[0],y:q[1]});return[+r.x.toFixed(4),+r.y.toFixed(4)]})}
-function xform(kind,v){const ids=S();if(!ids.length){logCmd('Select objects first.');return}
- hist.push(JSON.stringify(shapes));redo=[];const nsel=[];
+function xform(kind,v,cen,pv){const ids=S();if(!ids.length){logCmd('Select objects first.');return}
+ if(!pv){hist.push(JSON.stringify(shapes));redo=[]}const nsel=[];
  if(kind=='move'||kind=='copy'){let dx=v.dx,dy=v.dy;if(kind=='copy'&&!dx&&!dy)dx=dy=20/V.k;
   if(kind=='move'){ids.forEach(i=>moveS(shapes[i],dx,dy));ids.forEach(i=>nsel.push(i))}
   else ids.forEach(i=>{const c=JSON.parse(JSON.stringify(shapes[i]));moveS(c,dx,dy);shapes.push(c);nsel.push(shapes.length-1)})}
- else{const c=selCenter(ids),th=(kind=='rot'?v:0)*Math.PI/180,co=Math.cos(th),si=Math.sin(th),
+ else{const c=cen||selCenter(ids),th=(kind=='rot'?v:0)*Math.PI/180,co=Math.cos(th),si=Math.sin(th),
    fn=kind=='rot'?p=>({x:c.x+(p.x-c.x)*co-(p.y-c.y)*si,y:c.y+(p.x-c.x)*si+(p.y-c.y)*co}):p=>({x:c.x+(p.x-c.x)*v,y:c.y+(p.y-c.y)*v}),
    quarter=kind!='rot'||Math.abs(Math.round(v/90)*90-v)<1e-9;
   ids.forEach(i=>{const s=shapes[i];
    if(s.t=='rect'&&!quarter){const x0=Math.min(s.a.x,s.b.x),x1=Math.max(s.a.x,s.b.x),y0=Math.min(s.a.y,s.b.y),y1=Math.max(s.a.y,s.b.y),K=[{x:x0,y:y0},{x:x1,y:y0},{x:x1,y:y1},{x:x0,y:y1}].map(fn),pr={};
     for(const k of['d','c','mm','w'])if(s[k]!=null)pr[k]=s[k];
     K.forEach((p,j)=>{const l=Object.assign({t:'line',a:p,b:K[(j+1)%4]},pr);if(j==0){shapes[i]=l;nsel.push(i)}else{shapes.push(l);nsel.push(shapes.length-1)}})}
-   else{mapS(s,fn);if(kind=='sc'&&s.t=='text')s.h*=v;if(kind=='rot'&&s.t=='text'){const r=(((s.r||0)+v)%360+360)%360;if(r)s.r=+r.toFixed(3);else delete s.r}nsel.push(i)}})}
- setSelArr(nsel);save();draw();ui()}
+   else{mapS(s,fn);if(kind=='sc'&&s.t=='text'){s.h*=v;if(s.w)s.w*=v}if(kind=='rot'&&s.t=='text'){const r=(((s.r||0)+v)%360+360)%360;if(r)s.r=+r.toFixed(3);else delete s.r}nsel.push(i)}})}
+ setSelArr(nsel);if(!pv)save();draw();ui()}
 const nv=id=>parseFloat($('#'+id).value);
-let rtSnap=null,rtIds=null;
-function rtPrev(v){if(!rtSnap)return;const sn=JSON.parse(rtSnap);shapes.length=0;sn.forEach(x=>shapes.push(x));setSelArr(rtIds.slice());const hl=hist.length;xform('rot',v);hist.length=hl;draw()}
-$('#mrs').oninput=()=>{const sl=$('#mrs'),v=+sl.value;if(!rtSnap){const ids=S();if(!ids.length){logCmd('Select objects first.');sl.value=0;return}rtSnap=JSON.stringify(shapes);rtIds=ids.slice()}$('#mrv').textContent=v+'°';rtPrev(v)};
-$('#mrs').onchange=()=>{if(!rtSnap)return;hist.push(rtSnap);redo=[];rtSnap=null;rtIds=null;$('#mrs').value=0;$('#mrv').textContent='0°';save();draw();ui()};
+let rtFull=null,rtOrig=null,rtIds=null,rtN=0;
+function rotInit(ids){rtIds=ids.slice();rtFull=JSON.stringify(shapes);rtN=shapes.length;rtOrig={};ids.forEach(i=>rtOrig[i]=JSON.stringify(shapes[i]))}
+function rotRestore(){if(!rtOrig)return;shapes.length=rtN;for(const i of rtIds)shapes[i]=JSON.parse(rtOrig[i])}
+function rotPrev(){if(!rtOrig||!start||!cur)return;rotRestore();setSelArr(rtIds.slice());xform('rot',Math.atan2(cur.y-start.y,cur.x-start.x)*180/Math.PI,start,true)}
+function rotCancel(){if(!rtOrig)return;rotRestore();setSelArr(rtIds.slice());rtOrig=null;rtFull=null}
+function rotCommit(){if(!rtOrig){start=null;return}if(Math.hypot(cur.x-start.x,cur.y-start.y)<1e-6){start=null;rotRestore();draw();ui();return}
+ rotPrev();hist.push(rtFull);redo=[];const ids=S().slice();rtOrig=null;rtFull=null;start=null;save();setTool('none',false);setSelArr(ids);logCmd('Rotated.');draw();ui()}
+{const rb=document.querySelector('[data-t=rot]');if(rb)rb.onclick=()=>{if(tool=='rot'){setTool('none',false);logCmd('ROTATE off');return}const ids=S().slice();if(!ids.length){flash('Select the objects first, then tap Rotate');return}setTool('rot');rotInit(ids);setSelArr(ids);ui();draw()}}
 $('#edb').onclick=()=>{$('#mdp').hidden=!$('#mdp').hidden};
 $('#mcl').onclick=()=>{$('#mdp').hidden=true};
 $('#mmv').onclick=()=>xform('move',{dx:nv('mdx')||0,dy:nv('mdy')||0});
 $('#mcp').onclick=()=>xform('copy',{dx:nv('mdx')||0,dy:nv('mdy')||0});
-$('#mrb').onclick=()=>{const v=nv('mrt');if(isNaN(v)){logCmd('Enter an angle.');return}xform('rot',v)};
 $('#msb').onclick=()=>{const v=nv('msc');if(!(v>0)){logCmd('Enter a scale factor above 0.');return}xform('sc',v)};
 function scBaseUpdate(){const o=JSON.parse(scOrig),m=$('#scb').value;{const q=scIds.map(i=>shapeBox(o[i]));scBox={x0:Math.min(...q.map(b=>b.x0)),x1:Math.max(...q.map(b=>b.x1)),y0:Math.min(...q.map(b=>b.y0)),y1:Math.max(...q.map(b=>b.y1))}}
  if(m=='origin')scB={x:0,y:0};else if(m=='pick'&&scBase)scB=scBase;
@@ -939,7 +977,7 @@ function scBaseUpdate(){const o=JSON.parse(scOrig),m=$('#scb').value;{const q=sc
 function scInfo(){const bb=scIds.map(i=>shapeBox(shapes[i])),w=Math.max(...bb.map(b=>b.x1))-Math.min(...bb.map(b=>b.x0)),h=Math.max(...bb.map(b=>b.y1))-Math.min(...bb.map(b=>b.y0));
  $('#scn').textContent=(scIds.length==shapes.length?'Whole drawing':scIds.length+' selected')+': '+fmt(w)+' × '+fmt(h)+' mm'}
 function scApply(k){const b=scB;shapes=JSON.parse(scOrig);const fn=p=>({x:b.x+(p.x-b.x)*k,y:b.y+(p.y-b.y)*k});
- for(const i of scIds){mapS(shapes[i],fn);if(shapes[i].t=='text')shapes[i].h*=k}scK=k;scInfo();draw()}
+ for(const i of scIds){mapS(shapes[i],fn);if(shapes[i].t=='text'){shapes[i].h*=k;if(shapes[i].w)shapes[i].w*=k}}scK=k;scInfo();draw()}
 function scSet(k){if(!(k>0))return;k=Math.min(Math.max(k,1e-4),1e4);$('#scf').value=+k.toPrecision(6);$('#scs').value=Math.max(-100,Math.min(100,Math.log10(k)*100));scApply(k)}
 function scOpen(){if(scOrig||tool=='sref'||tool=='sbase')return;let ids=S();
  if(!ids.length){if(!shapes.length){logCmd('Nothing to scale.');return}ids=shapes.map((_,i)=>i);logCmd('No selection: scaling the whole drawing.')}
