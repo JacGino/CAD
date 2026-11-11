@@ -111,7 +111,7 @@ body.fs #cmd,body.fs #stat{display:none}
 .pal input[type=radio]{accent-color:var(--blue);margin:0}
 #pwn{color:var(--mut)}
 #pcw,#pch{width:64px}
-#mdp input[type=number]{width:70px}
+#mdp input[type=number]{width:70px}#mdp input[type=range]{width:170px;vertical-align:middle}#mdp #mrv{display:inline-block;min-width:38px}
 #scp input[type=number]{width:78px}
 #osm{position:fixed;z-index:40;min-width:0;max-width:96vw;overflow-y:auto;background:#eceff2;color:#1d2126;border-radius:14px;box-shadow:0 8px 30px #000a;padding:4px 0;font-size:13px}#osm .og{display:grid;grid-template-columns:1fr 1fr}#osm[hidden]{display:none}
 #osm .or{display:flex;align-items:center;gap:6px;width:100%;padding:3px 10px 3px 6px;border:0;background:none;color:inherit;text-align:left;font-size:13px;min-height:34px;white-space:nowrap}#osm .or:active{background:#d5dae0}
@@ -162,7 +162,7 @@ body.fs #cmd,body.fs #stat{display:none}
 <button class="rb" data-z="1.4"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l5 5M8 10h4M10 8v4"/></svg>Zoom +</button>
 <button class="rb" data-z="0.7143"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l5 5M8 10h4"/></svg>Zoom −</button>
 </div>
-<div id="wrap"><canvas id="cv"></canvas><div id="cpt" hidden></div><label id="scfl" hidden>×<input id="scf" type="number" value="1" step="any" min="0.0001" inputmode="decimal" aria-label="Scale factor"></label><input id="file" type="file" accept="image/*" hidden><input id="dfile" type="file" hidden><div id="mn" hidden><button id="imp">Open…</button><button id="imgb">Attach image</button><button id="sva">Save as…<span>▸</span></button><div id="svm" hidden><button id="psave">Drawing <small>.json · keeps everything</small></button><button id="dxf">AutoCAD 2013 <small>.dxf</small></button><button id="dxf12">AutoCAD R12 <small>.dxf · older</small></button></div><button id="bgb">Background<span>▸</span></button><div id="bgm" hidden></div><button id="uib">Interface size<span>▸</span></button><div id="uim" hidden></div><button id="pdf">Plot to PDF</button><button id="inp"></button><div id="bld"></div></div>
+<div id="wrap"><canvas id="cv"></canvas><div id="cpt" hidden></div><label id="scfl" hidden>×<input id="scf" type="number" value="1" step="any" min="0.0001" inputmode="decimal" aria-label="Scale factor"></label><input id="file" type="file" accept="image/*" hidden><input id="dfile" type="file" multiple hidden><div id="mn" hidden><button id="imp">Open…</button><button id="apic">Add pictures…</button><button id="imgb">Attach image</button><button id="sva">Save as…<span>▸</span></button><div id="svm" hidden><button id="psave">Drawing <small>.json · keeps everything</small></button><button id="dxf">AutoCAD 2013 <small>.dxf</small></button><button id="dxf12">AutoCAD R12 <small>.dxf · older</small></button></div><button id="bgb">Background<span>▸</span></button><div id="bgm" hidden></div><button id="uib">Interface size<span>▸</span></button><div id="uim" hidden></div><button id="pdf">Plot to PDF</button><button id="inp"></button><div id="bld"></div></div>
 <div id="vp">[-][Top][2D Wireframe]</div></div>
 
 <div id="pp"><div id="phead"><button class="rx" id="pgrip" aria-label="Drag to move properties"><svg viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01" stroke-width="3"/></svg></button><button class="rx" id="pclose" aria-label="Close properties">×</button></div><button class="rx" id="pdock" hidden>Dock</button><label class="rb"><svg viewBox="0 0 24 24"><circle id="pcl" cx="12" cy="12" r="8" style="fill:#fff"/></svg><span>Color</span><input id="pc" type="color" aria-label="Colour"></label><button class="rb" id="pa"><svg viewBox="0 0 24 24"><path d="M5 19L12 4l7 15M8 14h8"/></svg>Auto</button><div class="sep"></div><label class="rb"><svg viewBox="0 0 24 24"><path id="pli" d="M3 12h18"/></svg><span id="pll">Solid</span><select id="pl" aria-label="Linetype"><option value="solid">Continuous</option><option value="dashed">Dashed</option><option value="dotted">Dotted</option><option value="dashdot">Dash-dot</option><option value="center">Center</option></select></label><label class="rb"><svg viewBox="0 0 24 24"><path id="pwi" d="M3 12h18" style="stroke-width:2"/></svg><span id="pwl">Default</span><select id="pw" aria-label="Lineweight"><option value="0.05">0.05 mm</option><option value="0.09">0.09 mm</option><option value="0.13">0.13 mm</option><option value="0.15">0.15 mm</option><option value="0.18">0.18 mm</option><option value="0.2">0.20 mm</option><option value="0.25">0.25 mm</option><option value="0.3">0.30 mm</option><option value="0.35">0.35 mm</option><option value="0.4">0.40 mm</option><option value="0.5">0.50 mm</option><option value="0.53">0.53 mm</option><option value="0.6">0.60 mm</option><option value="0.7">0.70 mm</option><option value="0.8">0.80 mm</option><option value="0.9">0.90 mm</option><option value="1">1.00 mm</option><option value="1.06">1.06 mm</option><option value="1.2">1.20 mm</option><option value="1.4">1.40 mm</option><option value="1.58">1.58 mm</option><option value="2">2.00 mm</option><option value="2.11">2.11 mm</option></select></label><div id="pimg" hidden><button class="rb" data-im="sat" aria-label="Saturation"><svg viewBox="0 0 24 24"><path d="M12 3c3.5 4.5 6 7.5 6 10.5a6 6 0 01-12 0C6 10.5 8.5 7.5 12 3z"/></svg>Saturation</button><button class="rb" data-im="br" aria-label="Brightness"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>Brightness</button><button class="rb" data-im="fade" aria-label="Fade"><svg viewBox="0 0 24 24"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6" stroke-dasharray="2 2"/></svg>Faded</button><button class="rb" data-im="crop" aria-label="Crop or clipping boundary" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 3v14h14M3 7h14v14"/></svg>Crop</button><button class="rb" data-im="reset" aria-label="Reset image"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 108-8M4 4v5h5"/></svg>Reset</button></div><button class="rb" id="pscl" hidden aria-label="Show scale base and reference"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Base / Ref</button><div class="rb" id="pref" hidden><span>Reference</span><input id="scr1" type="number" placeholder="now mm" step="any" inputmode="decimal" aria-label="Reference current length mm"><input id="scr2" type="number" placeholder="new mm" step="any" inputmode="decimal" aria-label="Reference new length mm"><button id="scm" type="button">Measure</button></div><label class="rb" id="pbase" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg><span id="pbl">Base</span><select id="scb" aria-label="Scale base"><option value="touch">Touched point</option><option value="center">Center</option><option value="origin">Origin 0,0</option><option value="corner">Opposite endpoint</option><option value="pick">Pick point</option></select></label><label class="rb"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" fill="currentColor" fill-opacity=".35"/></svg><span>Fill</span><input id="pf" type="checkbox" aria-label="Fill"></label><div class="rb tx" id="ptx" hidden><span>Text mm</span><input id="tsv" type="number" min="0.1" step="any" placeholder="Auto" aria-label="Text height in mm"><div class="stp"><button id="tsm" aria-label="Smaller">−</button><button id="tsp2" aria-label="Larger">+</button></div></div></div>
@@ -172,7 +172,7 @@ body.fs #cmd,body.fs #stat{display:none}
 <div id="isl" hidden><span id="isn"></span><input id="isr" type="range"><b id="isv"></b></div>
 <div id="imgp" class="pal" hidden><label>Image width <input id="iw" type="number" min="0.1" step="any"> mm</label><input id="io" type="range" min="10" max="100" value="50" aria-label="Image opacity" hidden><button class="tg" id="iadj" aria-pressed="false">Adjust</button><button class="tg" id="irm">Remove</button></div>
 <div id="scp" class="pal" hidden><b>Scale</b><input id="scs" type="range" min="-100" max="100" value="0" hidden><label><input type="checkbox" id="sau" checked> Auto apply</label><span id="scn"></span></div>
-<div id="mdp" class="pal" hidden><b id="mdn">0 selected</b><label>ΔX <input id="mdx" type="number" value="0" step="any"></label><label>ΔY <input id="mdy" type="number" value="0" step="any"></label><button class="tg" id="mmv">Move</button><button class="tg" id="mcp">Copy</button><label>Rotate <input id="mrt" type="number" value="90" step="any">°</label><button class="tg" id="mrb">Apply</button><label>Scale <input id="msc" type="number" value="2" step="any">×</label><button class="tg" id="msb">Apply</button><button class="tg" id="mcl">Close</button></div>
+<div id="mdp" class="pal" hidden><b id="mdn">0 selected</b><label>ΔX <input id="mdx" type="number" value="0" step="any"></label><label>ΔY <input id="mdy" type="number" value="0" step="any"></label><button class="tg" id="mmv">Move</button><button class="tg" id="mcp">Copy</button><label>Rotate <input id="mrt" type="number" value="90" step="any">°</label><button class="tg" id="mrb">Apply</button><label>Free <input id="mrs" type="range" min="-180" max="180" step="1" value="0" aria-label="Rotate freely"><b id="mrv">0°</b></label><label>Scale <input id="msc" type="number" value="2" step="any">×</label><button class="tg" id="msb">Apply</button><button class="tg" id="mcl">Close</button></div>
 <div id="plp" class="pal" hidden><b>Plot area</b><label><input type="radio" name="pa" value="ext" checked> Extents</label><label><input type="radio" name="pa" value="win"> Window</label><label><input type="radio" name="pa" value="disp"> Display</label><label>Page <select id="ppg"><option value="match">Match area</option><option value="a4">A4</option><option value="a3">A3</option><option value="a2">A2</option><option value="a1">A1</option><option value="a0">A0</option><option value="letter">Letter</option><option value="r169">16:9</option><option value="r43">4:3</option><option value="r11">1:1</option><option value="custom">Custom</option></select></label><span id="pcu" hidden><input id="pcw" type="number" value="297" min="10"> × <input id="pch" type="number" value="210" min="10"> mm</span><label><select id="por" disabled aria-label="Orientation"><option value="auto">Auto</option><option value="land">Landscape</option><option value="port">Portrait</option></select></label><label><input type="checkbox" id="pfit" checked> Fit to paper</label><button class="tg" id="pwb">Pick window</button><span id="pwn"></span><button class="tg" id="pgo">Plot</button><button class="tg" id="pcn">Cancel</button></div>
 <button id="kbx" hidden aria-label="Hide keyboard"><svg viewBox="0 0 24 24" style="width:20px;height:20px"><rect x="2.5" y="5" width="19" height="11" rx="1.5"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M7 12.5h10M9 19.5l3 2.5 3-2.5"/></svg>Hide keyboard</button>
 <div id="cmd"><div id="chist"></div><div id="crow"><span id="hint"></span><input id="ci" type="text" placeholder="Type a command" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Command line"></div></div>
@@ -193,11 +193,11 @@ let INK='#ffffff',cropOn=false,imgSl=null,cpMsg='',cpT=0,cpTm=0;
 let IMG=null,adj=false,imgDrag=null,tx=null,penDown=0,stroke=null,mv=null,inMode='both',scOrig=null,scd=null,scBox=null,scIds=[],scBase=null,scB={x:0,y:0},scK=1,plotWin=null,prevTool='select',shapes=[],V=null,W=0,H=0,tool='none',start=null,cur=null,sel=-1,SS=new Set(),gd=null,selBox=null,hist=[],redo=[];
 const FL={snap:true,ortho:false,osnap:true,grid:true,dyn:true,lwt:true,multi:true};
 let SH=[{n:'Drawing1',shapes:[],V:null,hist:[],redo:[]}],SC=0;
-try{const d2=JSON.parse(localStorage.getItem('drafter2'));if(d2&&Array.isArray(d2.s)&&d2.s.length){SH=d2.s.map(x=>({n:x.n||'Sheet',shapes:x.shapes||[],V:x.V||null,hist:[],redo:[]}));SC=Math.min(Math.max(d2.c|0,0),SH.length-1);shapes=SH[SC].shapes;V=SH[SC].V}
+try{const d2=JSON.parse(localStorage.getItem('drafter2'));if(d2&&Array.isArray(d2.s)&&d2.s.length){SH=d2.s.map(x=>({n:x.n||'Sheet',shapes:x.shapes||[],V:x.V||null,refs:x.refs||[],hist:[],redo:[]}));SC=Math.min(Math.max(d2.c|0,0),SH.length-1);shapes=SH[SC].shapes;V=SH[SC].V}
  else{const d=JSON.parse(localStorage.getItem('drafter1'));if(d&&d.shapes){shapes=d.shapes;V=d.V;SH[0].shapes=shapes;SH[0].V=V}}}catch(e){}
 SH[SC].hist=hist;SH[SC].redo=redo;
 const syncCur=()=>{const c=SH[SC];c.shapes=shapes;c.V=V;c.hist=hist;c.redo=redo};
-const save=()=>{try{syncCur();localStorage.setItem('drafter2',JSON.stringify({c:SC,s:SH.map(x=>({n:x.n,shapes:x.shapes,V:x.V}))}))}catch(e){}};
+const save=()=>{try{syncCur();localStorage.setItem('drafter2',JSON.stringify({c:SC,s:SH.map(x=>({n:x.n,shapes:x.shapes,V:x.V,refs:x.refs||[]}))}))}catch(e){}};
 const fmt=n=>String(+n.toFixed(2));
 const DASH={solid:[],dashed:[10,6],dotted:[2,5],dashdot:[12,5,2,5],center:[18,5,4,5]};
 const D={c:null,d:'solid',mm:.35,f:false,th:null};
@@ -280,6 +280,7 @@ function draw(){if(!V)return;const cs=getComputedStyle(document.documentElement)
   for(let i=Math.floor(a.x/st);i<=Math.ceil(b.x/st);i++){if((i%5==0)!=!!major)continue;const x=Math.round(V.ox+i*st*V.k)+.5;cx.moveTo(x,0);cx.lineTo(x,H)}
   for(let j=Math.floor(b.y/st);j<=Math.ceil(a.y/st);j++){if((j%5==0)!=!!major)continue;const y=Math.round(V.oy-j*st*V.k)+.5;cx.moveTo(0,y);cx.lineTo(W,y)}
   cx.stroke()}
+ {const c=SH[SC];if(c&&c.ul)for(const m of c.ul){const[ix,iy]=toS({x:m.x,y:m.y}),w=m.w*V.k,h=w*m.el.naturalHeight/m.el.naturalWidth;if(ix>W||iy>H||ix+w<0||iy+h<0)continue;cx.drawImage(m.el,ix,iy,w,h)}}
  if(IMG){const[ix,iy]=toS({x:IMG.x,y:IMG.y}),w=IMG.w*V.k,h=w*IMG.el.naturalHeight/IMG.el.naturalWidth;if(cropOn){const t=IMG.cr;IMG.cr=null;cx.globalAlpha=IMG.o*.3;imgPaint(ix,iy,w,h);IMG.cr=t}cx.globalAlpha=IMG.o;imgPaint(ix,iy,w,h);cx.globalAlpha=1;if(cropOn){const q=IMG.cr||{l:0,t:0,r:0,b:0},x0=ix+w*q.l,x1=ix+w*(1-q.r),y0=iy+h*q.t,y1=iy+h*(1-q.b);cx.setLineDash([6,4]);cx.strokeStyle='#fff';cx.lineWidth=1.5;cx.strokeRect(x0,y0,x1-x0,y1-y0);cx.setLineDash([]);cx.fillStyle='#fff';for(const[hx,hy]of cropHandles(x0,y0,x1,y1))cx.fillRect(hx-6,hy-6,12,12)}if(adj){cx.setLineDash([6,4]);cx.strokeStyle=c('--acc');cx.lineWidth=1.5;cx.strokeRect(ix,iy,w,h);cx.setLineDash([]);cx.fillStyle=c('--acc');for(const[hx,hy]of[[ix,iy],[ix+w,iy],[ix,iy+h],[ix+w,iy+h]])cx.fillRect(hx-6,hy-6,12,12)}}
  cx.lineJoin='round';cx.font='12px "IBM Plex Sans",system-ui,sans-serif';
  const ss=new Set(S());
@@ -414,9 +415,10 @@ addEventListener('keydown',e=>{if(e.key=='Escape'&&scOrig){e.preventDefault();if
  if(e.key=='Escape'&&sel>=0){sel=-1;draw();ui();return}if(e.key=='Escape'){start=null;draw();ui()}else if(e.key=='Delete'||e.key=='Backspace')del();else if((e.ctrlKey||e.metaKey)&&e.key=='z'){e.preventDefault();e.shiftKey?redoIt():undo()}});
 matchMedia('(prefers-color-scheme:dark)').addEventListener('change',draw);
 function saveImg(){try{if(IMG)localStorage.setItem('drafter1img',JSON.stringify({url:IMG.url,x:IMG.x,y:IMG.y,w:IMG.w,o:IMG.o,sat:IMG.sat,br:IMG.br,cr:IMG.cr}));else localStorage.removeItem('drafter1img')}catch(e){}}
-function useImg(url,state){const el=new Image();el.onload=()=>{const t=state?null:toW(20,20);IMG=state||{x:t.x,y:t.y,w:+((W-40)/V.k).toFixed(2),o:.5};IMG.el=el;IMG.url=url;if(IMG.sat==null)IMG.sat=100;if(IMG.br==null)IMG.br=100;if(!IMG.cr)IMG.cr=null;$('#imgp').hidden=false;if(!state){$('#pp').hidden=false;$('#ppb').setAttribute('aria-pressed',true)}imgPanel();$('#iw').value=IMG.w;$('#io').value=IMG.o*100;draw();saveImg()};el.src=url}
+function useImg(url,state){const el=new Image();el.onload=()=>{const t=state?null:toW(20,20);IMG=state||{x:t.x,y:t.y,w:+((W-40)/V.k).toFixed(2),o:.5};IMG.el=el;IMG.url=url;if(PEND&&!state){IMG.x=PEND.x;IMG.y=PEND.y;IMG.w=+PEND.w.toFixed(3);PEND=null}if(IMG.sat==null)IMG.sat=100;if(IMG.br==null)IMG.br=100;if(!IMG.cr)IMG.cr=null;$('#imgp').hidden=false;if(!state){$('#pp').hidden=false;$('#ppb').setAttribute('aria-pressed',true)}imgPanel();$('#iw').value=IMG.w;$('#io').value=IMG.o*100;draw();saveImg()};el.src=url}
 $('#imgb').onclick=()=>$('#file').click();
-$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const m=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(i.naturalWidth*m);c.height=Math.round(i.naturalHeight*m);c.getContext('2d').drawImage(i,0,0,c.width,c.height);useImg(c.toDataURL('image/jpeg',.82))};i.src=r.result};r.readAsDataURL(f);e.target.value=''};
+function loadImgFile(f){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const m=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(i.naturalWidth*m);c.height=Math.round(i.naturalHeight*m);c.getContext('2d').drawImage(i,0,0,c.width,c.height);useImg(c.toDataURL('image/jpeg',.82))};i.src=r.result};r.readAsDataURL(f)}
+$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;loadImgFile(f);e.target.value=''};
 $('#iw').oninput=e=>{const v=parseFloat(e.target.value);if(v>0&&IMG){IMG.w=v;draw();saveImg()}};
 $('#io').oninput=e=>{if(IMG){IMG.o=e.target.value/100;draw();saveImg()}};
 $('#irm').onclick=()=>{IMG=null;adj=false;$('#iadj').setAttribute('aria-pressed',false);cv.style.cursor='';$('#imgp').hidden=true;imgPanel();saveImg();draw();ui()};
@@ -520,12 +522,13 @@ const ACI={1:'#e03131',2:'#e6b800',3:'#2f9e44',4:'#0c8599',5:'#1c7ed6',6:'#ae3ec
 function dxfStyle(e){const o={},q=e.g.find(p=>p[0]==62);if(q&&ACI[q[1]])o.c=ACI[q[1]];const l=e.g.find(p=>p[0]==6);
  if(l){const n=l[1].toUpperCase();o.d=/CENTER/.test(n)?'center':/DASHDOT/.test(n)?'dashdot':/DASH|HIDDEN/.test(n)?'dashed':/DOT/.test(n)?'dotted':'solid'}return o}
 const txW=(t,h)=>{cx.save();cx.font='100px "IBM Plex Sans",system-ui,sans-serif';const w=cx.measureText(t).width/100*h;cx.restore();return w};
+var PEND=null;
 function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
  for(let j=0;j+1<L.length;j+=2){const c=parseInt(L[j],10),v=L[j+1];
   if(c===0){const t=v.trim();if(t=='SECTION')sec='?';else if(t=='ENDSEC'){sec='';cu=null}else if(sec=='ENTITIES'){cu={t,g:[]};ents.push(cu)}}
   else if(c===2&&sec=='?')sec=v.trim();
   else if(cu&&sec=='ENTITIES')cu.g.push([c,v.trim()])}
- const out=[],P=(x,y)=>({x,y});let skip=0;
+ const out=[],imgs=[],P=(x,y)=>({x,y});let skip=0;
  for(let k=0;k<ents.length;k++){const e=ents[k],st=dxfStyle(e),T=e.t;
   const seg=(x1,y1,x2,y2)=>{if(x1!==x2||y1!==y2)out.push(Object.assign({t:'line',a:P(x1,y1),b:P(x2,y2)},st))};
   const poly=(xs,ys,cl)=>{const n=xs.length;
@@ -559,17 +562,41 @@ function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
    const q=rot*Math.PI/180,c=Math.cos(q),sn=Math.sin(q);
    const sx=x+ax*c-ay*sn,sy=y+ax*sn+ay*c;
    out.push(Object.assign({t:'text',a:P(sx,sy),b:P(sx,sy),s:lines.join('\n'),h},ls!=1.2?{ls}:{},rot?{r:+rot.toFixed(3)}:{},st))}
+  else if(T=='IMAGE'){const u=P(num(e,11),num(e,21)),v=P(num(e,12),num(e,22)),pw=num(e,13)||1,ph=num(e,23)||1,w=Math.hypot(u.x,u.y)*pw,hh=Math.hypot(v.x,v.y)*ph,x=num(e,10),y=num(e,20),hd=(e.g.find(p=>p[0]==340)||[0,''])[1];imgs.push({x,y:y+hh,w,hd})}
   else if(T!='VERTEX'&&T!='SEQEND')skip++}
- return{out,skip}}
-$('#imp').onclick=()=>$('#dfile').click();
-$('#dfile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
- r.onload=()=>{const t=String(r.result);
-  if(/^\s*\{/.test(t)){try{const j=JSON.parse(t);if(!Array.isArray(j.shapes))throw 0;sheetNew((f.name||'Drawing').replace(/\.[^.]+$/,'').replace(/\.draft$/,'').slice(0,24),j.shapes,j.V);fit();save();flash('Opened in a new tab: '+shapes.length+' shapes')}catch(e){flash('This file is not a saved drawing from this app')}return}
-  if(/^AC10/.test(t)){flash('This is a DWG file. Convert it to DXF first, for example with the free ODA File Converter, then open the DXF here');return}
-  const o=dxfShapes(t);if(!o.out.length){flash('No supported shapes found in this file');return}
-  sheetNew((f.name||'Drawing').replace(/\.[^.]+$/,'').slice(0,24),o.out);fit();save();
-  flash('Opened in a new tab: '+o.out.length+' shapes'+(o.skip?'. Skipped '+o.skip+' unsupported items':''))};
- r.readAsText(f);e.target.value=''};
+  {const defs={};let cd=null;for(let j=0;j+1<L.length;j+=2){const c=parseInt(L[j],10),v=L[j+1].trim();if(c===0){cd=v=='IMAGEDEF'?{}:null}else if(cd){if(c===5)cd.h=v;else if(c===1){cd.n=v;defs[cd.h]=v}}}
+   for(const m of imgs){const n=defs[m.hd]||'';m.name=n.split(/[\\/]/).pop()}}
+ return{out,skip,imgs}}
+$('#imp').onclick=()=>{$('#dfile').accept='';$('#dfile').click()};
+$('#apic').onclick=()=>{$('#dfile').accept='image/*';$('#dfile').click()};
+const libMem=new Map(),IMX=/\.(jpe?g|png|gif|webp|bmp|heic|tiff?)$/i;
+const libDb=()=>new Promise((ok,no)=>{try{const q=indexedDB.open('cad2dpics',1);q.onupgradeneeded=()=>q.result.createObjectStore('p');q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)}catch(e){no(e)}});
+async function libPut(n,b){try{const d=await libDb();await new Promise((ok,no)=>{const t=d.transaction('p','readwrite');t.objectStore('p').put(b,n);t.oncomplete=ok;t.onerror=()=>no(t.error)});d.close()}catch(e){}}
+async function libGet(n){try{const d=await libDb();const v=await new Promise((ok,no)=>{const q=d.transaction('p').objectStore('p').get(n);q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)});d.close();return v}catch(e){return null}}
+const picLoad=b=>new Promise(ok=>{const u=URL.createObjectURL(b),i=new Image();i.onload=()=>{ok(i)};i.onerror=()=>{URL.revokeObjectURL(u);ok(null)};i.src=u});
+async function shrink(b){const i=await picLoad(b);if(!i)return null;const m=Math.min(1,1800/Math.max(i.naturalWidth,i.naturalHeight)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(i.naturalWidth*m));c.height=Math.max(1,Math.round(i.naturalHeight*m));c.getContext('2d').drawImage(i,0,0,c.width,c.height);return new Promise(ok=>c.toBlob(x=>ok(x||b),'image/jpeg',.85))}
+async function libAdd(fs){let n=0;for(const f of fs){const sb=await shrink(f);if(!sb)continue;const k=f.name.toLowerCase();libMem.set(k,sb);await libPut(k,sb);n++}return n}
+async function ulResolve(c){const miss=[];c.ul=[];for(const m of c.refs||[]){const k=(m.name||'').toLowerCase();let b=k&&(libMem.get(k)||await libGet(k));if(!b){miss.push(m.name||'(no name)');continue}libMem.set(k,b);const el=await picLoad(b);if(el)c.ul.push({el,x:m.x,y:m.y,w:m.w});else miss.push(m.name)}return miss}
+async function unzip(buf){const dv=new DataView(buf),u8=new Uint8Array(buf);let e=u8.length-22;while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;if(e<0)throw 0;const n=dv.getUint16(e+10,true);let p=dv.getUint32(e+16,true);const out=[];
+ for(let i=0;i<n;i++){if(dv.getUint32(p,true)!==0x02014b50)break;const meth=dv.getUint16(p+10,true),csz=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),lo=dv.getUint32(p+42,true),name=new TextDecoder().decode(u8.subarray(p+46,p+46+nl));p+=46+nl+xl+cl;
+  if(name.endsWith('/')||/(^|\/)(__MACOSX|\.)/.test(name))continue;const ln=dv.getUint16(lo+26,true),lx=dv.getUint16(lo+28,true),st=lo+30+ln+lx,data=u8.subarray(st,st+csz);let bytes;
+  if(meth==0)bytes=data;else if(meth==8)bytes=new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());else continue;
+  out.push({name:name.split('/').pop(),bytes})}return out}
+async function openDoc(f){const t=await f.text();
+ if(/^\s*\{/.test(t)){try{const j=JSON.parse(t);if(!Array.isArray(j.shapes))throw 0;sheetNew((f.name||'Drawing').replace(/\.[^.]+$/,'').replace(/\.draft$/,'').slice(0,24),j.shapes,j.V);fit();save();flash('Opened in a new tab: '+shapes.length+' shapes')}catch(e){flash('This file is not a saved drawing from this app')}return}
+ if(/^AC10/.test(t)){flash('This is a DWG file. Convert it to DXF first, for example with the free ODA File Converter, then open the DXF here');return}
+ const o=dxfShapes(t);if(!o.out.length&&!o.imgs.length){flash('No supported shapes found in this file');return}
+ sheetNew((f.name||'Drawing').replace(/\.[^.]+$/,'').slice(0,24),o.out);fit();
+ const c=SH[SC];c.refs=o.imgs.map(m=>({x:m.x,y:m.y,w:m.w,name:m.name||''}));save();
+ let msg='Opened in a new tab: '+o.out.length+' shapes'+(o.skip?'. Skipped '+o.skip+' unsupported items':'');
+ if(c.refs.length){const miss=await ulResolve(c);draw();msg+='. Pictures: '+(c.ul.length)+' placed'+(miss.length?', '+miss.length+' missing ('+[...new Set(miss)].slice(0,3).join(', ')+(miss.length>3?'…':'')+'). Use Add pictures… or open a zip of the folder':'')}
+ flash(msg)}
+$('#dfile').onchange=async e=>{const fs=[...e.target.files];e.target.value='';if(!fs.length)return;const docs=[],pics=[];
+ for(const f of fs){if(/\.zip$/i.test(f.name)){try{for(const z of await unzip(await f.arrayBuffer())){const q=new File([z.bytes],z.name);if(IMX.test(z.name))pics.push(q);else if(/\.(dxf|json|draft)$/i.test(z.name))docs.push(q)}}catch(x){flash('Could not read this zip file')}}else if(IMX.test(f.name))pics.push(f);else docs.push(f)}
+ if(pics.length){flash('Saving '+pics.length+' picture'+(pics.length>1?'s':'')+'…');await libAdd(pics)}
+ if(!docs.length){const c=SH[SC];if(c&&c.refs&&c.refs.length){const miss=await ulResolve(c);draw();flash('Pictures saved. '+c.ul.length+' placed'+(miss.length?', '+miss.length+' still missing':''))}else flash(pics.length?'Pictures saved in the app. They are placed automatically when you open a DXF that uses them':'Nothing to open');return}
+ for(const f of docs)await openDoc(f);if(pics.length&&docs.length)flash('Opened '+docs.length+' drawing'+(docs.length>1?'s':'')+' with '+pics.length+' picture'+(pics.length>1?'s':'')+' saved in the app')};
+setTimeout(()=>{SH.forEach(c=>{if(c.refs&&c.refs.length)ulResolve(c).then(()=>draw())})},0);
 const crcT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
 const crc32=b=>{let c=-1;for(const v of b)c=crcT[(c^v)&255]^(c>>>8);return(c^-1)>>>0};
 function zipStore(name,str){const enc=new TextEncoder(),data=enc.encode(str),nm=enc.encode(name),crc=crc32(data),n=data.length,
@@ -893,9 +920,13 @@ function xform(kind,v){const ids=S();if(!ids.length){logCmd('Select objects firs
    if(s.t=='rect'&&!quarter){const x0=Math.min(s.a.x,s.b.x),x1=Math.max(s.a.x,s.b.x),y0=Math.min(s.a.y,s.b.y),y1=Math.max(s.a.y,s.b.y),K=[{x:x0,y:y0},{x:x1,y:y0},{x:x1,y:y1},{x:x0,y:y1}].map(fn),pr={};
     for(const k of['d','c','mm','w'])if(s[k]!=null)pr[k]=s[k];
     K.forEach((p,j)=>{const l=Object.assign({t:'line',a:p,b:K[(j+1)%4]},pr);if(j==0){shapes[i]=l;nsel.push(i)}else{shapes.push(l);nsel.push(shapes.length-1)}})}
-   else{mapS(s,fn);if(kind=='sc'&&s.t=='text')s.h*=v;nsel.push(i)}})}
+   else{mapS(s,fn);if(kind=='sc'&&s.t=='text')s.h*=v;if(kind=='rot'&&s.t=='text'){const r=(((s.r||0)+v)%360+360)%360;if(r)s.r=+r.toFixed(3);else delete s.r}nsel.push(i)}})}
  setSelArr(nsel);save();draw();ui()}
 const nv=id=>parseFloat($('#'+id).value);
+let rtSnap=null,rtIds=null;
+function rtPrev(v){if(!rtSnap)return;const sn=JSON.parse(rtSnap);shapes.length=0;sn.forEach(x=>shapes.push(x));setSelArr(rtIds.slice());const hl=hist.length;xform('rot',v);hist.length=hl;draw()}
+$('#mrs').oninput=()=>{const sl=$('#mrs'),v=+sl.value;if(!rtSnap){const ids=S();if(!ids.length){logCmd('Select objects first.');sl.value=0;return}rtSnap=JSON.stringify(shapes);rtIds=ids.slice()}$('#mrv').textContent=v+'°';rtPrev(v)};
+$('#mrs').onchange=()=>{if(!rtSnap)return;hist.push(rtSnap);redo=[];rtSnap=null;rtIds=null;$('#mrs').value=0;$('#mrv').textContent='0°';save();draw();ui()};
 $('#edb').onclick=()=>{$('#mdp').hidden=!$('#mdp').hidden};
 $('#mcl').onclick=()=>{$('#mdp').hidden=true};
 $('#mmv').onclick=()=>xform('move',{dx:nv('mdx')||0,dy:nv('mdy')||0});
