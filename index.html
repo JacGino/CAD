@@ -161,7 +161,7 @@ body.fs #cmd,body.fs #stat{display:none}
 #pp:not(.fl) #ptx .fdone{width:48px;height:26px}
 #pp:not(.fl) #pref input{width:56px}
 </style></head><body>
-<div id="hud"><button class="qb" id="fm" aria-label="Application menu"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><button class="qb" data-c="imp" aria-label="Open DXF"><svg viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v10H3z"/></svg></button><button class="qb" data-c="svq" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6"/></svg></button><button class="qb" data-c="pdf" aria-label="Plot"><svg viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H4v-7h16v7h-3M7 14h10v6H7z"/></svg></button><button class="qb" id="undo" aria-label="Undo"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/></svg></button><button class="qb" id="redo" aria-label="Redo"><svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H10a6 6 0 000 12h3"/></svg></button><button class="qb" id="ppb" aria-label="Properties" aria-pressed="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle class="fl" cx="8.5" cy="10" r="1.3"/><circle class="fl" cx="12" cy="7.5" r="1.3"/><circle class="fl" cx="15.5" cy="10" r="1.3"/><path d="M12 20.5c-2 0-2-2.5 0-3s3-1.5 3-3h3.5"/></svg></button><button class="qb" id="rbt" aria-label="Show or hide toolbar" aria-pressed="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M9 4v16"/></svg></button><button class="qb" id="fs" aria-label="Full screen drawing" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button></div>
+<div id="hud"><button class="qb" id="fm" aria-label="Application menu"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><button class="qb" data-c="imp" aria-label="Open DXF"><svg viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v10H3z"/></svg></button><button class="qb" data-c="svq" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6"/></svg></button><button class="qb" data-c="pdf" aria-label="Plot"><svg viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H4v-7h16v7h-3M7 14h10v6H7z"/></svg></button><button class="qb" id="cpb" aria-label="Copy selected" title="Copy"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5.5A1.5 1.5 0 016.5 4H15"/></svg></button><button class="qb" id="psb" aria-label="Paste" title="Paste"><svg viewBox="0 0 24 24"><path d="M9 4h6v3H9zM9 5.5H6.5A1.5 1.5 0 005 7v12a1.5 1.5 0 001.5 1.5h11A1.5 1.5 0 0019 19V7a1.5 1.5 0 00-1.5-1.5H15"/><path d="M9 12h6M9 16h4"/></svg></button><button class="qb" id="undo" aria-label="Undo"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/></svg></button><button class="qb" id="redo" aria-label="Redo"><svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H10a6 6 0 000 12h3"/></svg></button><button class="qb" id="ppb" aria-label="Properties" aria-pressed="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle class="fl" cx="8.5" cy="10" r="1.3"/><circle class="fl" cx="12" cy="7.5" r="1.3"/><circle class="fl" cx="15.5" cy="10" r="1.3"/><path d="M12 20.5c-2 0-2-2.5 0-3s3-1.5 3-3h3.5"/></svg></button><button class="qb" id="rbt" aria-label="Show or hide toolbar" aria-pressed="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M9 4v16"/></svg></button><button class="qb" id="fs" aria-label="Full screen drawing" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button></div>
 <div id="sheets"><div id="shl"></div><button id="sha" aria-label="New drawing">+</button></div>
 <div id="main">
 <div id="rib">
@@ -362,7 +362,7 @@ function ui(){let h='';
  else{const n=S().length;h=n>1?'Command:  '+n+' objects selected   Drag to move':n==1?'Command:  '+meas(shapes[sel])+'   Drag to move':'Command:  Select objects, or drag a box:'}
  $('#hint').textContent=h;$('#mdn').textContent=S().length+' selected';
  const q=cur||{x:0,y:0};$('#coord').textContent=q.x.toFixed(4)+', '+q.y.toFixed(4)+', 0.0000';$('#dtab').textContent=SH[SC].n+(shapes.length?'*':'');
- $('#undo').disabled=!hist.length;$('#redo').disabled=!redo.length;$('#del').disabled=sel<0;
+ $('#cpb').disabled=sel<0;$('#psb').disabled=!(typeof CLIP!='undefined'&&CLIP&&CLIP.length);$('#undo').disabled=!hist.length;$('#redo').disabled=!redo.length;$('#del').disabled=sel<0;
  document.querySelectorAll('[data-t]').forEach(b=>b.setAttribute('aria-current',b.dataset.t==tool));syncProps()}
 function commit(){if(tool=='rot'){rotCommit();return}if(tool=='sref'){const len=Math.hypot(cur.x-start.x,cur.y-start.y);start=null;if(len>1e-9){$('#scr1').value=+len.toFixed(4);scRef()}scBack();return}
  if(tool=='pwin'){const x0=Math.min(start.x,cur.x),x1=Math.max(start.x,cur.x),y0=Math.min(start.y,cur.y),y1=Math.max(start.y,cur.y);start=null;
@@ -1061,6 +1061,18 @@ function scCommit(keep){if(!scOrig)return;if(Math.abs(scK-1)>1e-12){hist.push(sc
  scOrig=null;$('#scp').hidden=true;setSelArr(scIds);scKeepView();ui()}
 function scExit(){if(!scOrig)return;scd=null;down=null;if(Math.abs(scK-1)>1e-12)scCommit();else scCancel()}
 function flash(t){logCmd(t)}
+/* ---- Copy / Paste ---- */
+var CLIP=null,pasteN=0;try{CLIP=JSON.parse(localStorage.getItem('drafter1clip'))}catch(e){}
+function copySel(cut){const ids=S();if(!ids.length){flash('Select something first, then tap Copy');return false}
+ CLIP=ids.map(i=>JSON.parse(JSON.stringify(shapes[i])));pasteN=0;try{localStorage.setItem('drafter1clip',JSON.stringify(CLIP))}catch(e){}
+ if(cut)del();else ui();flash((cut?'Cut ':'Copied ')+ids.length+' object'+(ids.length>1?'s':'')+'. Tap Paste');return true}
+function pasteClip(){if(!CLIP||!CLIP.length){flash('Nothing copied yet');return}
+ if(tx)txDone();const tmp=CLIP.map(s=>JSON.parse(JSON.stringify(s))),P=pts(tmp),xs=P.map(q=>q.x),ys=P.map(q=>q.y),cxm=(Math.min(...xs)+Math.max(...xs))/2,cym=(Math.min(...ys)+Math.max(...ys))/2,t=toW(W/2,H/2),off=pasteN*18/V.k,dx=t.x-cxm+off,dy=t.y-cym-off;
+ hist.push(JSON.stringify(shapes));redo=[];const n0=shapes.length;tmp.forEach(s=>{moveS(s,dx,dy);shapes.push(s)});pasteN++;setSelArr(tmp.map((_,i)=>n0+i));save();draw();ui();flash('Pasted '+tmp.length+' object'+(tmp.length>1?'s':'')+'. Drag to move it')}
+$('#cpb').onclick=()=>copySel();$('#psb').onclick=pasteClip;
+addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.altKey)return;const t=e.target.tagName;if(t=='INPUT'||t=='TEXTAREA'||t=='SELECT')return;const k=e.key.toLowerCase();
+ if(k=='c'){e.preventDefault();copySel()}else if(k=='x'){e.preventDefault();copySel(true)}else if(k=='v'){e.preventDefault();pasteClip()}});
+
 /* ---- Text editor ribbon (AutoCAD-style) ---- */
 let lastFm={};
 const txF=()=>tx?(tx.i>=0?(shapes[tx.i]||{}):(tx.fm||(tx.fm={}))):{};
