@@ -16,7 +16,7 @@
 :root.lite{--panel:#e9ecef;--rib:#dde2e8;--tab:#f1f3f5;--stat:#e3e7ec;--line:#b4bcc6;--txt:#1d2126;--mut:#5a6570;--acc:#0b6fc4;--in:#ffffff;--press1:#cdd3da;--press2:#c0c8d0;--vp:#4a5560;--bd:#b4bcc6;--actbg:#cfe5f8;--actst:#cfe5f8;--sub:#dfe4ea;color-scheme:light}
 *{box-sizing:border-box}
 html{height:100%;background:var(--stat);scroll-padding-top:env(safe-area-inset-top,0px)}
-@media(min-width:700px){:root{padding-top:0;padding-bottom:0;padding-left:22px}html{scroll-padding-top:0;height:100dvh;min-height:100vh}body{height:100dvh;min-height:100vh}#stat{background:var(--stat)}}
+@media(min-width:700px){:root{padding-top:16px;padding-bottom:0;padding-left:22px;padding-right:22px}#hud{padding-left:34px}html{scroll-padding-top:0;height:100dvh;min-height:100vh}body{height:calc(100dvh - 16px);min-height:calc(100vh - 16px)}#stat{background:var(--stat)}}
 body{margin:0;height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--panel);color:var(--txt);font:12px/1.25 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;-webkit-user-select:none;user-select:none}
 button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -132,6 +132,8 @@ body.fs #cmd,body.fs #stat{display:none}
 #scfl{position:absolute;z-index:9;display:flex;align-items:center;gap:3px;padding:3px 6px;background:rgba(30,36,43,.96);border:1px solid var(--blue);border-radius:4px;font-size:14px}
 #scfl input{width:84px;font-size:16px;padding:2px 4px}
 #scfl[hidden]{display:none}
+@media(max-width:1300px){#ttl{font-size:0}#dtab{font-size:10px;margin-left:0}.st{padding:0 5px;gap:3px}#coord{min-width:0}}
+@media(max-width:900px){.ml{display:none}.st{padding:0 3px;gap:2px}#coord{padding:0 4px}}
 </style></head><body>
 <div id="hud"><button class="qb" id="fm" aria-label="Application menu"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><button class="qb" data-c="imp" aria-label="Open DXF"><svg viewBox="0 0 24 24"><path d="M3 7h6l2 2h10v10H3z"/></svg></button><button class="qb" data-c="dxf" aria-label="Save as DXF"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6"/></svg></button><button class="qb" data-c="pdf" aria-label="Plot"><svg viewBox="0 0 24 24"><path d="M7 9V4h10v5M7 17H4v-7h16v7h-3M7 14h10v6H7z"/></svg></button><button class="qb" id="undo" aria-label="Undo"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/></svg></button><button class="qb" id="redo" aria-label="Redo"><svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H10a6 6 0 000 12h3"/></svg></button><button class="qb" id="ppb" aria-label="Properties" aria-pressed="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle class="fl" cx="8.5" cy="10" r="1.3"/><circle class="fl" cx="12" cy="7.5" r="1.3"/><circle class="fl" cx="15.5" cy="10" r="1.3"/><path d="M12 20.5c-2 0-2-2.5 0-3s3-1.5 3-3h3.5"/></svg></button><button class="qb" id="rbt" aria-label="Show or hide toolbar" aria-pressed="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M9 4v16"/></svg></button><button class="qb" id="fs" aria-label="Full screen drawing" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button></div>
 <div id="sheets"><div id="shl"></div><button id="sha" aria-label="New drawing">+</button></div>
@@ -188,7 +190,7 @@ if(!window.claude){window.claude={use:async()=>({save:async({filename,data})=>{
 <script>
 const $=s=>document.querySelector(s),cv=$('#cv'),cx=cv.getContext('2d');
 let INK='#ffffff',cropOn=false,imgSl=null,cpMsg='',cpT=0,cpTm=0;
-let IMG=null,adj=false,imgDrag=null,tx=null,penDown=0,stroke=null,mv=null,inMode='both',scOrig=null,scd=null,scBox=null,scIds=[],scBase=null,scB={x:0,y:0},scK=1,plotWin=null,prevTool='select',shapes=[],V=null,W=0,H=0,tool='line',start=null,cur=null,sel=-1,SS=new Set(),gd=null,selBox=null,hist=[],redo=[];
+let IMG=null,adj=false,imgDrag=null,tx=null,penDown=0,stroke=null,mv=null,inMode='both',scOrig=null,scd=null,scBox=null,scIds=[],scBase=null,scB={x:0,y:0},scK=1,plotWin=null,prevTool='select',shapes=[],V=null,W=0,H=0,tool='none',start=null,cur=null,sel=-1,SS=new Set(),gd=null,selBox=null,hist=[],redo=[];
 const FL={snap:true,ortho:false,osnap:true,grid:true,dyn:true,lwt:true,multi:false};
 let SH=[{n:'Drawing1',shapes:[],V:null,hist:[],redo:[]}],SC=0;
 try{const d2=JSON.parse(localStorage.getItem('drafter2'));if(d2&&Array.isArray(d2.s)&&d2.s.length){SH=d2.s.map(x=>({n:x.n||'Sheet',shapes:x.shapes||[],V:x.V||null,hist:[],redo:[]}));SC=Math.min(Math.max(d2.c|0,0),SH.length-1);shapes=SH[SC].shapes;V=SH[SC].V}
