@@ -253,10 +253,11 @@ function snap(x,y){let p=toW(x,y);
  if(FL.ortho&&start&&(tool=='line'||tool=='dim')){Math.abs(p.x-start.x)>Math.abs(p.y-start.y)?p.y=start.y:p.x=start.x}
  return p}
 const dseg=(p,a,b)=>{const dx=b.x-a.x,dy=b.y-a.y,l=dx*dx+dy*dy;let t=l?((p.x-a.x)*dx+(p.y-a.y)*dy)/l:0;t=Math.max(0,Math.min(1,t));return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy)};
-function hit(x,y){const p=toW(x,y),tol=12/V.k;for(let i=shapes.length-1;i>=0;i--){const s=shapes[i],a=s.a,b=s.b;let d;
+var PT='mouse';
+function hit(x,y,px){const p=toW(x,y),P0=p,tol=(px||(PT=='touch'?24:14))/V.k;for(let i=shapes.length-1;i>=0;i--){const s=shapes[i],a=s.a,b=s.b;let d;
  if(s.t=='rect'){const c=[a,{x:b.x,y:a.y},b,{x:a.x,y:b.y}];d=Math.min(...c.map((q,j)=>dseg(p,q,c[(j+1)%4])))}
  else if(s.t=='free')d=Math.min(...s.p.map((q,j)=>j?dseg(p,{x:s.p[j-1][0],y:s.p[j-1][1]},{x:q[0],y:q[1]}):1e9));
- else if(s.t=='text'){const L=String(s.s).split('\n'),w=Math.max(...L.map(q=>q.length))*.6*s.h,lo=a.y-(L.length-1)*(s.ls||1.2)*s.h,dx=Math.max(a.x-p.x,0,p.x-a.x-w),dy=Math.max(lo-p.y,0,p.y-a.y-s.h);d=Math.hypot(dx,dy)}
+ else if(s.t=='text'){let p=P0;if(s.r){const cr=Math.cos(-s.r*Math.PI/180),sr=Math.sin(-s.r*Math.PI/180),ux=P0.x-a.x,uy=P0.y-a.y;p={x:a.x+ux*cr-uy*sr,y:a.y+ux*sr+uy*cr}}const L=String(s.s).split('\n'),w=Math.max(...L.map(q=>q.length))*.6*s.h,lo=a.y-(L.length-1)*(s.ls||1.2)*s.h,dx=Math.max(a.x-p.x,0,p.x-a.x-w),dy=Math.max(lo-p.y,0,p.y-a.y-s.h);d=Math.hypot(dx,dy)}
  else if(s.t=='arc')d=arcHit(s,p);
  else if(s.t=='circ')d=Math.abs(Math.hypot(p.x-a.x,p.y-a.y)-Math.hypot(b.x-a.x,b.y-a.y));
  else d=dseg(p,a,b);
@@ -265,7 +266,7 @@ function shape(s,col,w,hl){const[x1,y1]=toS(s.a),[x2,y2]=toS(s.b);
  if(s.t=='arc'&&s.m){const g=arcGeom(s);cx.strokeStyle=col;cx.lineWidth=w;cx.lineJoin='round';cx.setLineDash(hl?[]:(DASH[s.d]||[]));cx.beginPath();
   if(g&&g.r*V.k<1e6){const[ox,oy]=toS(g.c);cx.arc(ox,oy,g.r*V.k,-g.a1,-g.a2,g.ccw)}else{cx.moveTo(x1,y1);cx.lineTo(x2,y2)}cx.stroke();cx.setLineDash([]);return}
  if(s.t=='free'){cx.strokeStyle=col;cx.lineWidth=w;cx.lineJoin='round';cx.lineCap='round';cx.setLineDash(hl?[]:(DASH[s.d]||[]));cx.beginPath();s.p.forEach(([x,y],i)=>{const[sx,sy]=toS({x,y});i?cx.lineTo(sx,sy):cx.moveTo(sx,sy)});cx.stroke();cx.setLineDash([]);cx.lineCap='butt';return}
- if(s.t=='text'){cx.save();cx.fillStyle=col;cx.font=Math.max(1,s.h*V.k)+'px "IBM Plex Sans",system-ui,sans-serif';const ls=String(s.s).split('\n'),st=s.h*(s.ls||1.2)*V.k;if(hl){cx.strokeStyle=col;cx.lineWidth=w;cx.lineJoin='round'}ls.forEach((t,k)=>{if(hl)cx.strokeText(t,x1,y1+k*st);else cx.fillText(t,x1,y1+k*st)});cx.restore();return}cx.strokeStyle=col;cx.fillStyle=col;cx.lineWidth=w;cx.beginPath();
+ if(s.t=='text'){cx.save();cx.fillStyle=col;cx.font=Math.max(1,s.h*V.k)+'px "IBM Plex Sans",system-ui,sans-serif';const ls=String(s.s).split('\n'),st=s.h*(s.ls||1.2)*V.k;if(hl){cx.strokeStyle=col;cx.lineWidth=w;cx.lineJoin='round'}cx.translate(x1,y1);if(s.r)cx.rotate(-s.r*Math.PI/180);ls.forEach((t,k)=>{if(hl)cx.strokeText(t,0,k*st);else cx.fillText(t,0,k*st)});cx.restore();return}cx.strokeStyle=col;cx.fillStyle=col;cx.lineWidth=w;cx.beginPath();
  if(s.t=='rect')cx.rect(x1,y1,x2-x1,y2-y1);else if(s.t=='circ')cx.arc(x1,y1,Math.hypot(x2-x1,y2-y1),0,7);else{cx.moveTo(x1,y1);cx.lineTo(x2,y2)}
  if(s.f&&!hl&&(s.t=='rect'||s.t=='circ')){cx.save();cx.globalAlpha=.15;cx.fill();cx.restore()}cx.setLineDash(hl?[]:(DASH[s.d]||[]));cx.stroke();cx.setLineDash([]);
  if(s.t=='dim'){const an=Math.atan2(y2-y1,x2-x1),nx=-Math.sin(an)*7,ny=Math.cos(an)*7;cx.beginPath();
@@ -341,7 +342,7 @@ cv.addEventListener('wheel',e=>{e.preventDefault();
  zoomAt(e.offsetX,e.offsetY,e.deltaY<0?1.15:1/1.15);draw();save()},{passive:false});
 const P=new Map();let pinch=null,down=null;
 const pinchInfo=()=>{const[a,b]=[...P.values()];return{d:Math.hypot(a[0]-b[0],a[1]-b[1])||1,x:(a[0]+b[0])/2,y:(a[1]+b[1])/2,k:V.k,ox:V.ox,oy:V.oy}};
-cv.addEventListener('pointerdown',e=>{if(e.pointerType=='pen'){penDown=1;if(inMode=='pen'){P.clear();pinch=null}}else if(penDown&&inMode=='pen')return;
+cv.addEventListener('pointerdown',e=>{PT=e.pointerType;if(e.pointerType=='pen'){penDown=1;if(inMode=='pen'){P.clear();pinch=null}}else if(penDown&&inMode=='pen')return;
  cv.setPointerCapture(e.pointerId);P.set(e.pointerId,[e.offsetX,e.offsetY]);
  if(P.size==2){if(down&&!down.had)start=null;stroke=null;mv=null;gd=null;scd=null;selBox=null;down=null;pinch=pinchInfo();return}
  down={x:e.offsetX,y:e.offsetY,had:!!start,moved:false,ox:V.ox,oy:V.oy,pan:(isDraw()||tool=='text'||tool=='free')&&!canDraw(e)};
@@ -388,7 +389,7 @@ cv.addEventListener('pointerup',e=>{if(e.pointerType=='pen')penDown=0;else if(pe
  if(isDraw()){cur=snap(e.offsetX,e.offsetY);if(down.had||down.moved)commit()}
  else if(tool=='select'||tool=='none'){if(selBox){const b=selBox;selBox=null;const ids=boxSelect(b.x0,b.y0,b.x1,b.y1);setSelArr(FL.multi?[...new Set([...S(),...ids])]:ids);if(tx)txClose()}
   else if(!down.moved){const h=hit(e.offsetX,e.offsetY);
-   if(FL.multi){if(h>=0){const q=new Set(S());if(q.has(h))q.delete(h);else q.add(h);setSelArr([...q])}else setSelArr([])}else setSelArr(h>=0?[h]:[]);
+   if(FL.multi){if(h>=0){const q=new Set(S());if(q.has(h))q.delete(h);else q.add(h);setSelArr([...q])}else if(hit(e.offsetX,e.offsetY,48)<0)setSelArr([])}else setSelArr(h>=0?[h]:[]);
    if(S().length==1&&shapes[sel].t=='text')openTx(shapes[sel].a,sel);else if(tx)txClose()}}
  else if(tool=='text'&&!down.moved){const h=hit(e.offsetX,e.offsetY);if(h>=0&&shapes[h].t=='text')openTx(shapes[h].a,h);else openTx(snap(e.offsetX,e.offsetY),-1)}
  else if(tool=='sbase'&&!down.moved){const p=snap(e.offsetX,e.offsetY);scBase={x:p.x,y:p.y};scBack();scBaseUpdate();scSet(scK)}
@@ -518,6 +519,7 @@ const num=(e,c)=>{const q=e.g.find(p=>p[0]==c);return q?parseFloat(q[1])||0:0},a
 const ACI={1:'#e03131',2:'#e6b800',3:'#2f9e44',4:'#0c8599',5:'#1c7ed6',6:'#ae3ec9'};
 function dxfStyle(e){const o={},q=e.g.find(p=>p[0]==62);if(q&&ACI[q[1]])o.c=ACI[q[1]];const l=e.g.find(p=>p[0]==6);
  if(l){const n=l[1].toUpperCase();o.d=/CENTER/.test(n)?'center':/DASHDOT/.test(n)?'dashdot':/DASH|HIDDEN/.test(n)?'dashed':/DOT/.test(n)?'dotted':'solid'}return o}
+const txW=(t,h)=>{cx.save();cx.font='100px "IBM Plex Sans",system-ui,sans-serif';const w=cx.measureText(t).width/100*h;cx.restore();return w};
 function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
  for(let j=0;j+1<L.length;j+=2){const c=parseInt(L[j],10),v=L[j+1];
   if(c===0){const t=v.trim();if(t=='SECTION')sec='?';else if(t=='ENDSEC'){sec='';cu=null}else if(sec=='ENTITIES'){cu={t,g:[]};ents.push(cu)}}
@@ -534,11 +536,29 @@ function dxfShapes(txt){const L=txt.split(/\r?\n/),ents=[];let sec='',cu=null;
   else if(T=='ARC'){const x=num(e,10),y=num(e,20),r=num(e,40),a1=num(e,50)*Math.PI/180;let a2=num(e,51)*Math.PI/180;if(a2<=a1)a2+=2*Math.PI;const pp=an=>P(x+r*Math.cos(an),y+r*Math.sin(an));if(r>0)out.push(Object.assign({t:'arc',a:pp(a1),m:pp((a1+a2)/2),b:pp(a2)},st))}
   else if(T=='LWPOLYLINE')poly(all(e,10),all(e,20),num(e,70)&1);
   else if(T=='POLYLINE'){const xs=[],ys=[];while(k+1<ents.length&&ents[k+1].t=='VERTEX'){k++;xs.push(num(ents[k],10));ys.push(num(ents[k],20))}poly(xs,ys,num(e,70)&1)}
-  else if(T=='TEXT'||T=='MTEXT'){let x=num(e,10),y=num(e,20);const h=num(e,40)||2.5;
-   if((num(e,72)||num(e,73))&&e.g.some(p=>p[0]==11)){x=num(e,11);y=num(e,21)}
-   let s=e.g.filter(p=>p[0]==3).map(p=>p[1]).join('')+(e.g.find(p=>p[0]==1)||[0,''])[1];
-   s=s.replace(/\\P/g,'\n').replace(/\\[A-Za-z][^;]*;/g,'').replace(/[{}]/g,'').trim();
-   if(s)out.push(Object.assign({t:'text',a:P(x,y),b:P(x,y),s,h},st))}
+  else if(T=='TEXT'||T=='MTEXT'){const h=num(e,40)||2.5,mt=T=='MTEXT';let rot=0,x=num(e,10),y=num(e,20),str,ls=1.2,ax=0,ay=0;
+   const dxf=e.g.some(p=>p[0]==11);
+   if(mt){rot=dxf&&(num(e,11)||num(e,21))?Math.atan2(num(e,21),num(e,11))*180/Math.PI:num(e,50);
+    str=e.g.filter(p=>p[0]==3).map(p=>p[1]).join('')+(e.g.find(p=>p[0]==1)||[0,''])[1];
+    str=str.replace(/\\P/gi,'\n').replace(/\\~/g,' ').replace(/\\S([^;]*);/g,(m,q)=>q.replace(/[\^#]/g,'/')).replace(/\\[fFcCHhQqTtAaLlOoKkWw][^;]*;/g,'').replace(/\\([\\{}])/g,'$1').replace(/[{}]/g,'');
+    ls=1.5}
+   else{rot=num(e,50);str=(e.g.find(p=>p[0]==1)||[0,''])[1]}
+   str=str.replace(/%%[cC]/g,'Ø').replace(/%%[dD]/g,'°').replace(/%%[pP]/g,'±').replace(/%%[uUoO]/g,'');
+   let lines=str.split('\n');
+   const rw=mt?num(e,41):0;
+   if(mt&&rw>0){const o=[];for(const ln of lines){let cur='';for(const wd of ln.split(' ')){const t=cur?cur+' '+wd:wd;if(cur&&txW(t,h)>rw){o.push(cur);cur=wd}else cur=t}o.push(cur)}lines=o}
+   lines=lines.map(q=>q.replace(/\s+$/,''));while(lines.length&&!lines[lines.length-1])lines.pop();
+   if(!lines.length)continue;
+   const mw=Math.max(...lines.map(q=>txW(q,h))),n=lines.length,BH=(n-1)*ls*h+h;
+   if(mt){const at=num(e,71)||1,hz=(at-1)%3,vt=Math.floor((at-1)/3),bw=rw>0?rw:mw;
+    ax=-bw*hz/2;ay=vt==0?-h:vt==1?BH/2-h:(n-1)*ls*h}
+   else{const hj=num(e,72),vj=num(e,73);
+    if((hj||vj)&&dxf){x=num(e,11);y=num(e,21)}
+    ax=-mw*(hj==1||hj==3||hj==4||hj==5?.5:hj==2?1:0);
+    ay=vj==1?.25*h:vj==2?-.5*h:vj==3?-h:0;if(hj==4)ay=-.5*h}
+   const q=rot*Math.PI/180,c=Math.cos(q),sn=Math.sin(q);
+   const sx=x+ax*c-ay*sn,sy=y+ax*sn+ay*c;
+   out.push(Object.assign({t:'text',a:P(sx,sy),b:P(sx,sy),s:lines.join('\n'),h},ls!=1.2?{ls}:{},rot?{r:+rot.toFixed(3)}:{},st))}
   else if(T!='VERTEX'&&T!='SEQEND')skip++}
  return{out,skip}}
 $('#imp').onclick=()=>$('#dfile').click();
@@ -588,7 +608,7 @@ function buildDxf2013(){const LT={dashed:'DASHED',dotted:'DOT',dashdot:'DASHDOT'
   else if(sh.t=='free'){if(sh.p.length>1)lwp(sh,sh.p,false)}
   else if(sh.t=='arc'){const q=arcGeom(sh);if(!q)line(sh,a.x,a.y,b.x,b.y);else{const dg=v=>md(v)*180/Math.PI;base('ARC',sh,'AcDbCircle');pt(10,q.c.x,q.c.y);g(40,q.r);g(100,'AcDbArc');g(50,dg(q.ccw?q.a1:q.a2));g(51,dg(q.ccw?q.a2:q.a1))}}
   else if(sh.t=='circ'){base('CIRCLE',sh,'AcDbCircle');pt(10,a.x,a.y);g(40,Math.hypot(b.x-a.x,b.y-a.y))}
-  else if(sh.t=='text')String(sh.s).split('\n').forEach((t,k)=>txt(sh,a.x,a.y-k*sh.h*(sh.ls||1.2),sh.h,t))}
+  else if(sh.t=='text')String(sh.s).split('\n').forEach((t,k)=>{const d=-k*sh.h*(sh.ls||1.2),q=(sh.r||0)*Math.PI/180;txt(sh,a.x-d*Math.sin(q),a.y+d*Math.cos(q),sh.h,t,sh.r||0)})}
  const ENT=o;o='';
  // header
  g(0,'SECTION');g(2,'HEADER');g(9,'$ACADVER');g(1,'AC1027');g(9,'$HANDSEED');g(5,H());g(9,'$INSBASE');pt(10,0,0);g(9,'$EXTMIN');pt(10,ext.x0,ext.y0);g(9,'$EXTMAX');pt(10,ext.x1,ext.y1);g(9,'$LTSCALE');g(40,1);g(9,'$INSUNITS');g(70,4);g(9,'$MEASUREMENT');g(70,1);g(9,'$LWDISPLAY');g(290,1);g(0,'ENDSEC');
@@ -643,7 +663,7 @@ function buildDxf(){const LT={dashed:'DASHED',dotted:'DOT',dashdot:'DASHDOT',cen
   else if(s.t=='free'){g(0,'POLYLINE');base(s);g(66,1);g(70,0);for(const[x,y]of s.p){g(0,'VERTEX');g(8,'0');pt(10,x,y)}g(0,'SEQEND');g(8,'0')}
   else if(s.t=='arc'){const q=arcGeom(s);if(!q)line(s,a.x,a.y,b.x,b.y);else{const dg=v=>md(v)*180/Math.PI;g(0,'ARC');base(s);pt(10,q.c.x,q.c.y);g(40,q.r);g(50,dg(q.ccw?q.a1:q.a2));g(51,dg(q.ccw?q.a2:q.a1))}}
   else if(s.t=='circ'){g(0,'CIRCLE');base(s);pt(10,a.x,a.y);g(40,Math.hypot(b.x-a.x,b.y-a.y))}
-  else if(s.t=='text')String(s.s).split('\n').forEach((t,k)=>txt(s,a.x,a.y-k*s.h*(s.ls||1.2),s.h,t))}
+  else if(s.t=='text')String(s.s).split('\n').forEach((t,k)=>{const d=-k*s.h*(s.ls||1.2),q=(s.r||0)*Math.PI/180;txt(s,a.x-d*Math.sin(q),a.y+d*Math.cos(q),s.h,t,s.r||0)})}
  g(0,'ENDSEC');g(0,'EOF');return o}
 $('#dxf').onclick=async()=>{
  if(!shapes.length){flash('Draw something first, then export it');return}
