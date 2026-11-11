@@ -16,6 +16,7 @@
 :root.lite{--panel:#e9ecef;--rib:#dde2e8;--tab:#f1f3f5;--stat:#e3e7ec;--line:#b4bcc6;--txt:#1d2126;--mut:#5a6570;--acc:#0b6fc4;--in:#ffffff;--press1:#cdd3da;--press2:#c0c8d0;--vp:#4a5560;--bd:#b4bcc6;--actbg:#cfe5f8;--actst:#cfe5f8;--sub:#dfe4ea;color-scheme:light}
 *{box-sizing:border-box}
 html{height:100%;background:var(--stat);scroll-padding-top:env(safe-area-inset-top,0px)}
+@media(min-width:700px){:root{padding-top:0;padding-bottom:0}html{scroll-padding-top:0;height:100dvh;min-height:100vh}body{height:100dvh;min-height:100vh}#stat{background:var(--stat)}}
 body{margin:0;height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--panel);color:var(--txt);font:12px/1.25 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;-webkit-user-select:none;user-select:none}
 button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
 svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
