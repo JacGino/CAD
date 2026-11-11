@@ -466,7 +466,10 @@ matchMedia('(prefers-color-scheme:dark)').addEventListener('change',draw);
 function saveImg(){try{if(IMG)localStorage.setItem('drafter1img',JSON.stringify({url:IMG.url,x:IMG.x,y:IMG.y,w:IMG.w,o:IMG.o,sat:IMG.sat,br:IMG.br,cr:IMG.cr}));else localStorage.removeItem('drafter1img')}catch(e){}}
 function useImg(url,state){const el=new Image();el.onload=()=>{const t=state?null:toW(20,20);IMG=state||{x:t.x,y:t.y,w:+((W-40)/V.k).toFixed(2),o:.5};IMG.el=el;IMG.url=url;if(PEND&&!state){IMG.x=PEND.x;IMG.y=PEND.y;IMG.w=+PEND.w.toFixed(3);PEND=null}if(IMG.sat==null)IMG.sat=100;if(IMG.br==null)IMG.br=100;if(!IMG.cr)IMG.cr=null;$('#imgp').hidden=false;if(!state){$('#pp').hidden=false;$('#ppb').setAttribute('aria-pressed',true)}imgPanel();$('#iw').value=IMG.w;$('#io').value=IMG.o*100;draw();saveImg()};el.src=url}
 $('#imgb').onclick=()=>$('#file').click();
-function loadImgFile(f){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const m=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(i.naturalWidth*m);c.height=Math.round(i.naturalHeight*m);c.getContext('2d').drawImage(i,0,0,c.width,c.height);useImg(c.toDataURL('image/jpeg',.82))};i.src=r.result};r.readAsDataURL(f)}
+function loadImgFile(f){(async()=>{const sb=await shrink(f);if(!sb){flash('Could not read that picture');return}
+ const ext=(f.name.match(/\.[^.]+$/)||['.jpg'])[0],k=((f.name||'picture').replace(/\.[^.]+$/,'')||'picture')+'-'+Date.now().toString(36)+ext,kk=k.toLowerCase();
+ libMem.set(kk,sb);await libPut(kk,sb);const t=toW(W*.15,H*.15),w=+((W*.6)/V.k).toFixed(2);hist.push(JSON.stringify(shapes));redo=[];
+ shapes.push({t:'pic',a:{x:t.x,y:t.y},b:{x:t.x,y:t.y},w,name:k});save();setTool('none',false);setSelArr([shapes.length-1]);draw();ui();flash('Picture added. Drag its corner to resize, tap it to edit')})()}
 $('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;loadImgFile(f);e.target.value=''};
 $('#iw').oninput=e=>{const v=parseFloat(e.target.value);if(v>0&&IMG){IMG.w=v;draw();saveImg()}};
 $('#io').oninput=e=>{if(IMG){IMG.o=e.target.value/100;draw();saveImg()}};
